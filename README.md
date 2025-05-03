@@ -1,2 +1,2 @@
-# COBOL-Formation-
+# COBOL Formation
 Exercises performed during the formation
