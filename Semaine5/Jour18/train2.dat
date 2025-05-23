@@ -1,0 +1,47 @@
+Train grande vitesse  Station depart: PORTO             Heure depart: 21:33h  Duree trajet: 20  Arrets: 10  Heure arrivee: 17:33h
+Train grande vitesse  Station depart: MALAGA            Heure depart: 21:34h  Duree trajet: 18  Arrets: 06  Heure arrivee: 15:34h
+Train regional        Station depart: MONS              Heure depart: 21:38h  Duree trajet: 01  Arrets: 00  Heure arrivee: 22:38h
+Train grande vitesse  Station depart: OSLO              Heure depart: 21:40h  Duree trajet: 24  Arrets: 07  Heure arrivee: 21:40h
+Train regional        Station depart: DIEPPE            Heure depart: 21:41h  Duree trajet: 01  Arrets: 02  Heure arrivee: 22:41h
+Corail                Station depart: GAND              Heure depart: 21:42h  Duree trajet: 01  Arrets: 03  Heure arrivee: 22:42h
+Train grande vitesse  Station depart: LISBONNE          Heure depart: 21:43h  Duree trajet: 48  Arrets: 10  Heure arrivee: 21:43h
+Train grande vitesse  Station depart: MADRID            Heure depart: 21:46h  Duree trajet: 32  Arrets: 10  Heure arrivee: 05:46h
+Train grande vitesse  Station depart: ALENCE            Heure depart: 21:48h  Duree trajet: 15  Arrets: 06  Heure arrivee: 12:48h
+Train grande vitesse  Station depart: GLASGOW           Heure depart: 22:00h  Duree trajet: 20  Arrets: 10  Heure arrivee: 18:00h
+Train grande vitesse  Station depart: LYON              Heure depart: 22:03h  Duree trajet: 02  Arrets: 00  Heure arrivee: 00:03h
+Train grande vitesse  Station depart: LILLE             Heure depart: 22:04h  Duree trajet: 03  Arrets: 04  Heure arrivee: 01:04h
+Train grande vitesse  Station depart: PARIS             Heure depart: 22:06h  Duree trajet: 01  Arrets: 00  Heure arrivee: 23:06h
+Train grande vitesse  Station depart: STRABOURG         Heure depart: 22:07h  Duree trajet: 03  Arrets: 01  Heure arrivee: 01:07h
+Train grande vitesse  Station depart: MARSEILLE         Heure depart: 22:12h  Duree trajet: 05  Arrets: 06  Heure arrivee: 03:12h
+Train grande vitesse  Station depart: LENS              Heure depart: 22:22h  Duree trajet: 01  Arrets: 01  Heure arrivee: 23:22h
+Train grande vitesse  Station depart: ARRAS             Heure depart: 22:26h  Duree trajet: 01  Arrets: 01  Heure arrivee: 23:26h
+Corail                Station depart: BREST             Heure depart: 22:28h  Duree trajet: 02  Arrets: 03  Heure arrivee: 00:28h
+Train grande vitesse  Station depart: TOULOUSE          Heure depart: 22:33h  Duree trajet: 07  Arrets: 10  Heure arrivee: 05:33h
+Corail                Station depart: ANGERS            Heure depart: 22:36h  Duree trajet: 02  Arrets: 02  Heure arrivee: 00:36h
+Train grande vitesse  Station depart: BRUXELLES         Heure depart: 22:44h  Duree trajet: 01  Arrets: 00  Heure arrivee: 23:44h
+Train grande vitesse  Station depart: LONDRES           Heure depart: 22:48h  Duree trajet: 03  Arrets: 00  Heure arrivee: 01:48h
+Train grande vitesse  Station depart: TOULON            Heure depart: 22:51h  Duree trajet: 05  Arrets: 09  Heure arrivee: 03:51h
+Train grande vitesse  Station depart: NICE              Heure depart: 22:52h  Duree trajet: 07  Arrets: 10  Heure arrivee: 05:52h
+Train grande vitesse  Station depart: CANNES            Heure depart: 22:57h  Duree trajet: 06  Arrets: 09  Heure arrivee: 04:57h
+Train grande vitesse  Station depart: ASTON             Heure depart: 23:06h  Duree trajet: 05  Arrets: 01  Heure arrivee: 04:06h
+Train grande vitesse  Station depart: SAINTE            Heure depart: 23:11h  Duree trajet: 05  Arrets: 03  Heure arrivee: 04:11h
+Train grande vitesse  Station depart: MENTON            Heure depart: 23:15h  Duree trajet: 08  Arrets: 03  Heure arrivee: 07:15h
+Train regional        Station depart: GRENOBLE          Heure depart: 23:18h  Duree trajet: 04  Arrets: 07  Heure arrivee: 03:18h
+Corail                Station depart: SAINTMALO         Heure depart: 23:24h  Duree trajet: 03  Arrets: 02  Heure arrivee: 02:24h
+Corail                Station depart: LORIENT           Heure depart: 23:36h  Duree trajet: 03  Arrets: 03  Heure arrivee: 02:36h
+Train grande vitesse  Station depart: NANTES            Heure depart: 23:40h  Duree trajet: 03  Arrets: 05  Heure arrivee: 02:40h
+Train grande vitesse  Station depart: BERLIN            Heure depart: 23:43h  Duree trajet: 05  Arrets: 06  Heure arrivee: 04:43h
+Train regional        Station depart: CHERBOURG         Heure depart: 23:46h  Duree trajet: 03  Arrets: 01  Heure arrivee: 02:46h
+Train grande vitesse  Station depart: PRAGUE            Heure depart: 23:51h  Duree trajet: 20  Arrets: 00  Heure arrivee: 19:51h
+Train regional        Station depart: ANNECY            Heure depart: 00:01h  Duree trajet: 05  Arrets: 01  Heure arrivee: 05:01h
+Train grande vitesse  Station depart: GENEVE            Heure depart: 00:16h  Duree trajet: 05  Arrets: 00  Heure arrivee: 05:16h
+Train grande vitesse  Station depart: LAUSANNE          Heure depart: 00:21h  Duree trajet: 05  Arrets: 00  Heure arrivee: 05:21h
+Train grande vitesse  Station depart: BERNE             Heure depart: 00:23h  Duree trajet: 06  Arrets: 00  Heure arrivee: 06:23h
+Train grande vitesse  Station depart: SAINT GAL         Heure depart: 00:36h  Duree trajet: 07  Arrets: 00  Heure arrivee: 07:36h
+Train grande vitesse  Station depart: LUCERNE           Heure depart: 00:42h  Duree trajet: 06  Arrets: 00  Heure arrivee: 06:42h
+Train grande vitesse  Station depart: ROME              Heure depart: 00:48h  Duree trajet: 15  Arrets: 01  Heure arrivee: 15:48h
+Train grande vitesse  Station depart: VENISE            Heure depart: 00:56h  Duree trajet: 08  Arrets: 05  Heure arrivee: 08:56h
+Train grande vitesse  Station depart: VIENNE            Heure depart: 01:01h  Duree trajet: 10  Arrets: 01  Heure arrivee: 11:01h
+Train grande vitesse  Station depart: AMSTERDAM         Heure depart: 01:07h  Duree trajet: 03  Arrets: 01  Heure arrivee: 04:07h
+Train grande vitesse  Station depart: ANVERS            Heure depart: 01:17h  Duree trajet: 03  Arrets: 01  Heure arrivee: 04:17h
+Total trains : 46
