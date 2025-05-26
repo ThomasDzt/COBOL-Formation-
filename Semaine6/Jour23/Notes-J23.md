@@ -90,3 +90,9 @@ pour grouper les données par colonnes.
 
 Mots-clés pour le tri les résultats d'une requête SQL : **ORDER BY** et **ASC/DESC**. On utilise parfois avec ceci les clauses **LIMIT** (réduit le nombre de lignes à renvoyer par la requête) et **OFFSET** (pour préciser d'où on commence à compter les lignes).
 Inclure ces clauses rend aussi ces requêtes plus rapides et efficaces en affichant juste le contenu voulu.
+
+Utilisation du mot-clé **JOIN** 
+Normalisation des bases de données pour répartir les données dans plusieurs tables. Besoin d'une clé primaire "primary key" qui identifie les entités de manière unique dans les bases de données. La clause **JOIN** permet de lier les enregistrements de 2 tables séparées.
+Plusieurs types de JOIN :
+
+**INNER JOIN** 
