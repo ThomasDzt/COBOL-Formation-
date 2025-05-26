@@ -96,3 +96,25 @@ Normalisation des bases de données pour répartir les données dans plusieurs t
 Plusieurs types de JOIN :
 
 **INNER JOIN** 
+Relie des enregistrements de même clé de 2 tables. La contrainte **ON** définit cette clé. Cette jointure résulte en une ligne avec des attributs combinés pour les 2 tables.
+
+**OUTER JOIN**
+À utiliser pour les données asymmétriques,pour ne perdre aucune donnée dans les résultats de requêtes. 
+Il y a plusieurs types d'OUTER JOIN dans lesquels on spécifie les attributs qu'on veut lier :
+
+- **LEFT JOIN**
+Quand on lie une table A à une table B, le LEFT JOIN inclut les lignes de A sans tenir compte de si une ligne correspondante est trouvée dans B (?)
+
+- **RIGHT JOIN** 
+Inverse de LEFT JOIN
+
+- **FULL JOIN**
+Garde les lignes des 2 tables, sans se soucier de si une ligne correspondante est trouvée (?)
+
+
+**Notes sur les valeurs NULL**
+Requièrent une attention particulière lorsqu'on établit des requêtes.
+Les alternatives aux valeurs NULL sont par exemple des valeurs par défaut telles que le 0 pour les données numériques, des strings vides pour les données texte.
+
+Quand on joint des données asymétriques on se retrouve avec des valeurs NULL.
+--> On peut les gérer avec la contrainte WHERE ... IS NULL/IS NOT NULL.
