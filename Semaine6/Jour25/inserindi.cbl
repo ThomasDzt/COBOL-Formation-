@@ -189,6 +189,9 @@
           DISPLAY "Insertion réussie."
        ELSE
           DISPLAY "Erreur d'insertion SQLCODE: " SQLCODE
+          EXEC SQL 
+           ROLLBACK 
+          END-EXEC 
        END-IF.
 
 
@@ -216,6 +219,9 @@
        
        ELSE
           DISPLAY "Erreur de lecture SQLCODE: " SQLCODE
+          EXEC SQL 
+           ROLLBACK 
+          END-EXEC 
        END-IF.
 
        2200-LIRE-INDIV-FIN.
@@ -243,6 +249,9 @@
        
        ELSE
           DISPLAY "Erreur de modification SQLCODE: " SQLCODE
+          EXEC SQL 
+           ROLLBACK 
+          END-EXEC 
        END-IF.
 
 
@@ -262,6 +271,9 @@
        
        ELSE
           DISPLAY "Erreur de suppression SQLCODE: " SQLCODE
+          EXEC SQL 
+           ROLLBACK 
+          END-EXEC 
        END-IF.
 
 
