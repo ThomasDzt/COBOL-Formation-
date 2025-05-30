@@ -27,9 +27,9 @@
        EXEC SQL INCLUDE SQLCA END-EXEC.
        
        01 WS-CRUD   PIC X.
-       01 WS-CONTINUE  PIC X.
-           88 WS-CONTINUE-Y    VALUE "Y".
-           88 WS-CONTINUE-N    VALUE "n".
+       01 WS-QUITTER  PIC X   VALUE "n".
+           88 WS-QUITTER-N    VALUE "n".
+           88 WS-QUITTER-O    VALUE "O".
            
 
       ******************************************************************
@@ -76,7 +76,9 @@
            DISPLAY "                           ".
            DISPLAY "           Supprimer (D/d)     ".
            DISPLAY "                           ".
-           ACCEPT WS-CRUD.
+           DISPLAY "            Quitter (Q/q)     ".
+           DISPLAY "                           ".
+           
 
 
        1000-MENU-FIN.
@@ -85,107 +87,65 @@
       *-----------------------------------------------------------------
        2000-CRUD-DEBUT.
        
-       EVALUATE WS-CRUD
+       SET WS-QUITTER-N TO TRUE.
+
+       PERFORM UNTIL WS-QUITTER-O
            
-           WHEN "C" 
-              
-              PERFORM 2500-SAISIE-INDIV-DEBUT
-                 THRU 2500-SAISIE-INDIV-FIN
+           DISPLAY "Choisir une option "
+           ACCEPT WS-CRUD
+           EVALUATE WS-CRUD
+               
+               WHEN "C" 
+                  
+                  PERFORM 2050-SAISIE-INDIV-DEBUT
+                     THRU 2050-SAISIE-INDIV-FIN
+                  
+                  PERFORM 2100-CREER-INDIV-DEBUT
+                     THRU 2100-CREER-INDIV-FIN
+               
+      
+               WHEN "R"
+                  
+                  PERFORM 2060-DEMANDE-ID-DEBUT
+                     THRU 2060-DEMANDE-ID-FIN
+                  
+                  PERFORM 2200-LIRE-INDIV-DEBUT
+                     THRU 2200-LIRE-INDIV-FIN
+                  
+      
+               WHEN "U"
+      
+                  PERFORM 2060-DEMANDE-ID-DEBUT
+                     THRU 2060-DEMANDE-ID-FIN
+      
+                  PERFORM 2050-SAISIE-INDIV-DEBUT
+                     THRU 2050-SAISIE-INDIV-FIN               
+                  
+                  PERFORM 2300-MODIFIER-INDIV-DEBUT
+                     THRU 2300-MODIFIER-INDIV-FIN
+      
+      
+               WHEN "D"
+      
+                  PERFORM 2060-DEMANDE-ID-DEBUT
+                     THRU 2060-DEMANDE-ID-FIN
+      
+                  PERFORM 2400-SUPPRIMER-INDIV-DEBUT
+                     THRU 2400-SUPPRIMER-INDIV-FIN
+      
 
-              EXEC SQL
-                 INSERT INTO individus (nom, prenom, telephone)
-                 VALUES (:INDIVIDU-NOM, :INDIVIDU-PRENOM,
-                        :INDIVIDU-TEL)
-              END-EXEC
-              
-              IF SQLCODE = 0
-                 DISPLAY "Insertion réussie."
-              ELSE
-                 DISPLAY "Erreur d'insertion SQLCODE: " SQLCODE
-              END-IF
-           
+              WHEN "Q"
 
-           WHEN "R"
-              
-              DISPLAY "Entrez l'id de l'individu voulu : "
-              ACCEPT INDIVIDU-ID
+                 SET WS-QUITTER-O TO TRUE 
 
-              EXEC SQL 
-                 SELECT nom, prenom, telephone 
-                 INTO :INDIVIDU-NOM, :INDIVIDU-PRENOM, :INDIVIDU-TEL 
-                 FROM individus
-                 WHERE id = :INDIVIDU-ID
-              END-EXEC
-              
-              IF SQLCODE = 0
-                 DISPLAY "Lecture effectuée."
-                 DISPLAY "Nom : " INDIVIDU-NOM
-                 SPACES WITH NO ADVANCING 
-                         "Prénom : " INDIVIDU-PRENOM
-                 SPACES WITH NO ADVANCING
-                         "Téléphone : " INDIVIDU-TEL
-              
-              ELSE
-                 DISPLAY "Erreur de lecture SQLCODE: " SQLCODE
-              END-IF
+           END-EVALUATE
 
+           DISPLAY "Quitter (O/n) ?"
+           ACCEPT WS-QUITTER
 
-           WHEN "U"
-
-              DISPLAY "Entrez l'id de l'individu voulu : "
-              ACCEPT INDIVIDU-ID
-
-              DISPLAY "Entrez le nom voulu : "
-              ACCEPT INDIVIDU-NOM
-
-              DISPLAY "Entrez le prénom voulu : "
-              ACCEPT INDIVIDU-PRENOM
-              
-              DISPLAY "Entrez le numéro de téléphone voulu : "
-              ACCEPT INDIVIDU-TEL 
-              
-              EXEC SQL 
-                 UPDATE individus
-                 SET nom = :INDIVIDU-NOM, 
-                 prenom = :INDIVIDU-PRENOM,
-                 telephone = :INDIVIDU-TEL
-                 WHERE id = :INDIVIDU-ID
-              END-EXEC
-
-              IF SQLCODE = 0
-                 DISPLAY "Modification effectuée."
-                 DISPLAY "Nom : " INDIVIDU-NOM
-                 SPACES WITH NO ADVANCING 
-                         "Prénom : " INDIVIDU-PRENOM
-                 SPACES WITH NO ADVANCING
-                         "Téléphone : " INDIVIDU-TEL
-              
-              ELSE
-                 DISPLAY "Erreur de modification SQLCODE: " SQLCODE
-              END-IF
-
-
-
-           WHEN "D"
-
-              DISPLAY "Entrez l'id de l'individu voulu : "
-              ACCEPT INDIVIDU-ID
-
-              EXEC SQL
-                 DELETE FROM individus
-                 WHERE id = :INDIVIDU-ID  
-              END-EXEC
-
-              IF SQLCODE = 0
-                 DISPLAY "Suppression effectuée."
-              
-              ELSE
-                 DISPLAY "Erreur de suppression SQLCODE: " SQLCODE
-              END-IF
-
-
-       END-EVALUATE.
        
+
+       END-PERFORM.
        
 
        2000-CRUD-FIN.
@@ -193,7 +153,7 @@
 
       *-----------------------------------------------------------------
 
-       2500-SAISIE-INDIV-DEBUT.
+       2050-SAISIE-INDIV-DEBUT.
        
        DISPLAY "Entrez le nom de l'individu : ".
        ACCEPT INDIVIDU-NOM.
@@ -203,17 +163,109 @@
        ACCEPT INDIVIDU-TEL.
 
 
-       2500-SAISIE-INDIV-FIN.
+       2050-SAISIE-INDIV-FIN.
        EXIT.
 
       *-----------------------------------------------------------------
-
+       2060-DEMANDE-ID-DEBUT.
        
+       DISPLAY "Entrez l'id de l'individu voulu : ".
+       ACCEPT INDIVIDU-ID.
+
+       2060-DEMANDE-ID-FIN.
+       EXIT.
+      *-----------------------------------------------------------------
 
 
+       2100-CREER-INDIV-DEBUT.
+       
+       EXEC SQL
+          INSERT INTO individus (nom, prenom, telephone)
+          VALUES (:INDIVIDU-NOM, :INDIVIDU-PRENOM,
+                 :INDIVIDU-TEL)
+       END-EXEC.
+              
+       IF SQLCODE = 0
+          DISPLAY "Insertion réussie."
+       ELSE
+          DISPLAY "Erreur d'insertion SQLCODE: " SQLCODE
+       END-IF.
 
 
+       2100-CREER-INDIV-FIN.
+       EXIT.
+       
+      *-----------------------------------------------------------------
+
+       2200-LIRE-INDIV-DEBUT.
+       
+       EXEC SQL 
+          SELECT nom, prenom, telephone 
+          INTO :INDIVIDU-NOM, :INDIVIDU-PRENOM, :INDIVIDU-TEL 
+          FROM individus
+          WHERE id = :INDIVIDU-ID
+       END-EXEC.
+              
+       IF SQLCODE = 0
+          DISPLAY "Lecture effectuée."
+          DISPLAY "Nom : " INDIVIDU-NOM
+          SPACES WITH NO ADVANCING 
+                  "Prénom : " INDIVIDU-PRENOM
+          SPACES WITH NO ADVANCING
+                  "Téléphone : " INDIVIDU-TEL
+       
+       ELSE
+          DISPLAY "Erreur de lecture SQLCODE: " SQLCODE
+       END-IF.
+
+       2200-LIRE-INDIV-FIN.
+       EXIT.
 
 
+      *-----------------------------------------------------------------
+       2300-MODIFIER-INDIV-DEBUT.
+       
+       EXEC SQL 
+          UPDATE individus
+          SET nom = :INDIVIDU-NOM, 
+          prenom = :INDIVIDU-PRENOM,
+          telephone = :INDIVIDU-TEL
+          WHERE id = :INDIVIDU-ID
+       END-EXEC.
 
+       IF SQLCODE = 0
+          DISPLAY "Modification effectuée."
+          DISPLAY "Nom : " INDIVIDU-NOM
+          SPACES WITH NO ADVANCING 
+                  "Prénom : " INDIVIDU-PRENOM
+          SPACES WITH NO ADVANCING
+                  "Téléphone : " INDIVIDU-TEL
+       
+       ELSE
+          DISPLAY "Erreur de modification SQLCODE: " SQLCODE
+       END-IF.
+
+
+       2300-MODIFIER-INDIV-FIN.
+       EXIT.
+
+      *-----------------------------------------------------------------
+       2400-SUPPRIMER-INDIV-DEBUT.
+
+       EXEC SQL
+          DELETE FROM individus
+          WHERE id = :INDIVIDU-ID  
+       END-EXEC.
+
+       IF SQLCODE = 0
+          DISPLAY "Suppression effectuée."
+       
+       ELSE
+          DISPLAY "Erreur de suppression SQLCODE: " SQLCODE
+       END-IF.
+
+
+       2400-SUPPRIMER-INDIV-FIN.
+       EXIT.
+      *-----------------------------------------------------------------
 

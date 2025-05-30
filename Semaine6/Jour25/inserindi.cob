@@ -28,9 +28,9 @@ OCESQL*EXEC SQL INCLUDE SQLCA END-EXEC.
 OCESQL     copy "sqlca.cbl".
        
        01 WS-CRUD   PIC X.
-       01 WS-CONTINUE  PIC X.
-           88 WS-CONTINUE-Y    VALUE "Y".
-           88 WS-CONTINUE-N    VALUE "n".
+       01 WS-QUITTER  PIC X   VALUE "n".
+           88 WS-QUITTER-N    VALUE "n".
+           88 WS-QUITTER-O    VALUE "O".
            
 
       ******************************************************************
@@ -115,7 +115,9 @@ OCESQL     END-CALL.
            DISPLAY "                           ".
            DISPLAY "           Supprimer (D/d)     ".
            DISPLAY "                           ".
-           ACCEPT WS-CRUD.
+           DISPLAY "            Quitter (Q/q)     ".
+           DISPLAY "                           ".
+           
 
 
        1000-MENU-FIN.
@@ -124,18 +126,103 @@ OCESQL     END-CALL.
       *-----------------------------------------------------------------
        2000-CRUD-DEBUT.
        
-       EVALUATE WS-CRUD
-           
-           WHEN "C" 
-              
-              PERFORM 2500-SAISIE-INDIV-DEBUT
-                 THRU 2500-SAISIE-INDIV-FIN
+       SET WS-QUITTER-N TO TRUE.
 
-OCESQL*       EXEC SQL
-OCESQL*          INSERT INTO individus (nom, prenom, telephone)
-OCESQL*          VALUES (:INDIVIDU-NOM, :INDIVIDU-PRENOM,
-OCESQL*                 :INDIVIDU-TEL)
-OCESQL*       END-EXEC
+       PERFORM UNTIL WS-QUITTER-O
+           
+           DISPLAY "Choisir une option "
+           ACCEPT WS-CRUD
+           EVALUATE WS-CRUD
+               
+               WHEN "C" 
+                  
+                  PERFORM 2050-SAISIE-INDIV-DEBUT
+                     THRU 2050-SAISIE-INDIV-FIN
+                  
+                  PERFORM 2100-CREER-INDIV-DEBUT
+                     THRU 2100-CREER-INDIV-FIN
+               
+      
+               WHEN "R"
+                  
+                  PERFORM 2060-DEMANDE-ID-DEBUT
+                     THRU 2060-DEMANDE-ID-FIN
+                  
+                  PERFORM 2200-LIRE-INDIV-DEBUT
+                     THRU 2200-LIRE-INDIV-FIN
+                  
+      
+               WHEN "U"
+      
+                  PERFORM 2060-DEMANDE-ID-DEBUT
+                     THRU 2060-DEMANDE-ID-FIN
+      
+                  PERFORM 2050-SAISIE-INDIV-DEBUT
+                     THRU 2050-SAISIE-INDIV-FIN               
+                  
+                  PERFORM 2300-MODIFIER-INDIV-DEBUT
+                     THRU 2300-MODIFIER-INDIV-FIN
+      
+      
+               WHEN "D"
+      
+                  PERFORM 2060-DEMANDE-ID-DEBUT
+                     THRU 2060-DEMANDE-ID-FIN
+      
+                  PERFORM 2400-SUPPRIMER-INDIV-DEBUT
+                     THRU 2400-SUPPRIMER-INDIV-FIN
+      
+
+              WHEN "Q"
+
+                 SET WS-QUITTER-O TO TRUE 
+
+           END-EVALUATE
+
+           DISPLAY "Quitter (O/n) ?"
+           ACCEPT WS-QUITTER
+
+       
+
+       END-PERFORM.
+       
+
+       2000-CRUD-FIN.
+       EXIT.
+
+      *-----------------------------------------------------------------
+
+       2050-SAISIE-INDIV-DEBUT.
+       
+       DISPLAY "Entrez le nom de l'individu : ".
+       ACCEPT INDIVIDU-NOM.
+       DISPLAY "Entrez le prénom de l'individu : ".
+       ACCEPT INDIVIDU-PRENOM.
+       DISPLAY "Entrez le numéro de l'individu : ".
+       ACCEPT INDIVIDU-TEL.
+
+
+       2050-SAISIE-INDIV-FIN.
+       EXIT.
+
+      *-----------------------------------------------------------------
+       2060-DEMANDE-ID-DEBUT.
+       
+       DISPLAY "Entrez l'id de l'individu voulu : ".
+       ACCEPT INDIVIDU-ID.
+
+       2060-DEMANDE-ID-FIN.
+       EXIT.
+      *-----------------------------------------------------------------
+
+
+       2100-CREER-INDIV-DEBUT.
+       
+OCESQL*EXEC SQL
+OCESQL*   INSERT INTO individus (nom, prenom, telephone)
+OCESQL*   VALUES (:INDIVIDU-NOM, :INDIVIDU-PRENOM,
+OCESQL*          :INDIVIDU-TEL)
+OCESQL*END-EXEC.
 OCESQL     CALL "OCESQLStartSQL"
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLSetSQLParams" USING
@@ -162,26 +249,28 @@ OCESQL          BY REFERENCE SQ0001
 OCESQL          BY VALUE 3
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLEndSQL"
-OCESQL     END-CALL
+OCESQL     END-CALL.
               
-              IF SQLCODE = 0
-                 DISPLAY "Insertion réussie."
-              ELSE
-                 DISPLAY "Erreur d'insertion SQLCODE: " SQLCODE
-              END-IF
-           
+       IF SQLCODE = 0
+          DISPLAY "Insertion réussie."
+       ELSE
+          DISPLAY "Erreur d'insertion SQLCODE: " SQLCODE
+       END-IF.
 
-           WHEN "R"
-              
-              DISPLAY "Entrez l'id de l'individu voulu : "
-              ACCEPT INDIVIDU-ID
 
-OCESQL*       EXEC SQL 
-OCESQL*          SELECT nom, prenom, telephone 
-OCESQL*          INTO :INDIVIDU-NOM, :INDIVIDU-PRENOM, :INDIVIDU-TEL 
-OCESQL*          FROM individus
-OCESQL*          WHERE id = :INDIVIDU-ID
-OCESQL*       END-EXEC
+       2100-CREER-INDIV-FIN.
+       EXIT.
+       
+      *-----------------------------------------------------------------
+
+       2200-LIRE-INDIV-DEBUT.
+       
+OCESQL*EXEC SQL 
+OCESQL*   SELECT nom, prenom, telephone 
+OCESQL*   INTO :INDIVIDU-NOM, :INDIVIDU-PRENOM, :INDIVIDU-TEL 
+OCESQL*   FROM individus
+OCESQL*   WHERE id = :INDIVIDU-ID
+OCESQL*END-EXEC.
 OCESQL     CALL "OCESQLStartSQL"
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLSetResultParams" USING
@@ -215,42 +304,34 @@ OCESQL          BY VALUE 1
 OCESQL          BY VALUE 3
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLEndSQL"
-OCESQL     END-CALL
+OCESQL     END-CALL.
               
-              IF SQLCODE = 0
-                 DISPLAY "Lecture effectuée."
-                 DISPLAY "Nom : " INDIVIDU-NOM
-                 SPACES WITH NO ADVANCING 
-                         "Prénom : " INDIVIDU-PRENOM
-                 SPACES WITH NO ADVANCING
-                         "Téléphone : " INDIVIDU-TEL
-              
-              ELSE
-                 DISPLAY "Erreur de lecture SQLCODE: " SQLCODE
-              END-IF
+       IF SQLCODE = 0
+          DISPLAY "Lecture effectuée."
+          DISPLAY "Nom : " INDIVIDU-NOM
+          SPACES WITH NO ADVANCING 
+                  "Prénom : " INDIVIDU-PRENOM
+          SPACES WITH NO ADVANCING
+                  "Téléphone : " INDIVIDU-TEL
+       
+       ELSE
+          DISPLAY "Erreur de lecture SQLCODE: " SQLCODE
+       END-IF.
+
+       2200-LIRE-INDIV-FIN.
+       EXIT.
 
 
-           WHEN "U"
-
-              DISPLAY "Entrez l'id de l'individu voulu : "
-              ACCEPT INDIVIDU-ID
-
-              DISPLAY "Entrez le nom voulu : "
-              ACCEPT INDIVIDU-NOM
-
-              DISPLAY "Entrez le prénom voulu : "
-              ACCEPT INDIVIDU-PRENOM
-              
-              DISPLAY "Entrez le numéro de téléphone voulu : "
-              ACCEPT INDIVIDU-TEL 
-              
-OCESQL*       EXEC SQL 
-OCESQL*          UPDATE individus
-OCESQL*          SET nom = :INDIVIDU-NOM, 
-OCESQL*          prenom = :INDIVIDU-PRENOM,
-OCESQL*          telephone = :INDIVIDU-TEL
-OCESQL*          WHERE id = :INDIVIDU-ID
-OCESQL*       END-EXEC
+      *-----------------------------------------------------------------
+       2300-MODIFIER-INDIV-DEBUT.
+       
+OCESQL*EXEC SQL 
+OCESQL*   UPDATE individus
+OCESQL*   SET nom = :INDIVIDU-NOM, 
+OCESQL*   prenom = :INDIVIDU-PRENOM,
+OCESQL*   telephone = :INDIVIDU-TEL
+OCESQL*   WHERE id = :INDIVIDU-ID
+OCESQL*END-EXEC.
 OCESQL     CALL "OCESQLStartSQL"
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLSetSQLParams" USING
@@ -283,31 +364,31 @@ OCESQL          BY REFERENCE SQ0003
 OCESQL          BY VALUE 4
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLEndSQL"
-OCESQL     END-CALL
+OCESQL     END-CALL.
 
-              IF SQLCODE = 0
-                 DISPLAY "Modification effectuée."
-                 DISPLAY "Nom : " INDIVIDU-NOM
-                 SPACES WITH NO ADVANCING 
-                         "Prénom : " INDIVIDU-PRENOM
-                 SPACES WITH NO ADVANCING
-                         "Téléphone : " INDIVIDU-TEL
-              
-              ELSE
-                 DISPLAY "Erreur de modification SQLCODE: " SQLCODE
-              END-IF
+       IF SQLCODE = 0
+          DISPLAY "Modification effectuée."
+          DISPLAY "Nom : " INDIVIDU-NOM
+          SPACES WITH NO ADVANCING 
+                  "Prénom : " INDIVIDU-PRENOM
+          SPACES WITH NO ADVANCING
+                  "Téléphone : " INDIVIDU-TEL
+       
+       ELSE
+          DISPLAY "Erreur de modification SQLCODE: " SQLCODE
+       END-IF.
 
 
+       2300-MODIFIER-INDIV-FIN.
+       EXIT.
 
-           WHEN "D"
+      *-----------------------------------------------------------------
+       2400-SUPPRIMER-INDIV-DEBUT.
 
-              DISPLAY "Entrez l'id de l'individu voulu : "
-              ACCEPT INDIVIDU-ID
-
-OCESQL*       EXEC SQL
-OCESQL*          DELETE FROM individus
-OCESQL*          WHERE id = :INDIVIDU-ID  
-OCESQL*       END-EXEC
+OCESQL*EXEC SQL
+OCESQL*   DELETE FROM individus
+OCESQL*   WHERE id = :INDIVIDU-ID  
+OCESQL*END-EXEC.
 OCESQL     CALL "OCESQLStartSQL"
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLSetSQLParams" USING
@@ -322,44 +403,17 @@ OCESQL          BY REFERENCE SQ0004
 OCESQL          BY VALUE 1
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLEndSQL"
-OCESQL     END-CALL
+OCESQL     END-CALL.
 
-              IF SQLCODE = 0
-                 DISPLAY "Suppression effectuée."
-              
-              ELSE
-                 DISPLAY "Erreur de suppression SQLCODE: " SQLCODE
-              END-IF
-
-
-       END-EVALUATE.
+       IF SQLCODE = 0
+          DISPLAY "Suppression effectuée."
        
-       
+       ELSE
+          DISPLAY "Erreur de suppression SQLCODE: " SQLCODE
+       END-IF.
 
-       2000-CRUD-FIN.
+
+       2400-SUPPRIMER-INDIV-FIN.
        EXIT.
-
       *-----------------------------------------------------------------
-
-       2500-SAISIE-INDIV-DEBUT.
-       
-       DISPLAY "Entrez le nom de l'individu : ".
-       ACCEPT INDIVIDU-NOM.
-       DISPLAY "Entrez le prénom de l'individu : ".
-       ACCEPT INDIVIDU-PRENOM.
-       DISPLAY "Entrez le numéro de l'individu : ".
-       ACCEPT INDIVIDU-TEL.
-
-
-       2500-SAISIE-INDIV-FIN.
-       EXIT.
-
-
-
-
-
-
-
-
-
 
