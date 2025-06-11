@@ -16,30 +16,18 @@
                                 LK-COMPTEUR.
        
 
-      *PERFORM 0100-VALID-ID-DEBUT
-      *   THRU 0100-VALID-ID-FIN.
 
-       PERFORM 0200-VALID-EMAIL-DEBUT
-          THRU 0200-VALID-EMAIL-FIN.
+       PERFORM 0100-VALID-EMAIL-DEBUT
+          THRU 0100-VALID-EMAIL-FIN.
        
        
        
       ****************************************************************** 
       *                          PARAGRAPHES                           *
       ******************************************************************
-      *0100-VALID-ID-DEBUT.
-
-      *IF LK-ID-UTILISATEUR IS NOT NUMERIC
-      *    MOVE 1 TO RETURN-CODE
-      *END-IF. 
-
-
-      *0100-VALID-ID-FIN.
-      *EXIT.
       
-      *-----------------------------------------------------------------
       
-       0200-VALID-EMAIL-DEBUT.   
+       0100-VALID-EMAIL-DEBUT.   
        
        MOVE 0 TO LK-COMPTEUR.
 
@@ -58,7 +46,7 @@
        END-IF.
        
 
-       0200-VALID-EMAIL-FIN.
+       0100-VALID-EMAIL-FIN.
        EXIT.
 
       *-----------------------------------------------------------------
