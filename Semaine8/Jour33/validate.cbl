@@ -16,8 +16,8 @@
                                 LK-COMPTEUR.
        
 
-       PERFORM 0100-VALID-ID-DEBUT
-          THRU 0100-VALID-ID-FIN.
+      *PERFORM 0100-VALID-ID-DEBUT
+      *   THRU 0100-VALID-ID-FIN.
 
        PERFORM 0200-VALID-EMAIL-DEBUT
           THRU 0200-VALID-EMAIL-FIN.
@@ -27,15 +27,15 @@
       ****************************************************************** 
       *                          PARAGRAPHES                           *
       ******************************************************************
-       0100-VALID-ID-DEBUT.
+      *0100-VALID-ID-DEBUT.
 
-       IF LK-ID-UTILISATEUR IS NOT NUMERIC
-           DISPLAY "L'ID de l'utilisateur est invalide"
-       END-IF. 
+      *IF LK-ID-UTILISATEUR IS NOT NUMERIC
+      *    MOVE 1 TO RETURN-CODE
+      *END-IF. 
 
 
-       0100-VALID-ID-FIN.
-       EXIT.
+      *0100-VALID-ID-FIN.
+      *EXIT.
       
       *-----------------------------------------------------------------
       
@@ -46,14 +46,15 @@
        INSPECT LK-EMAIL-UTILISATEUR
        TALLYING LK-COMPTEUR FOR ALL "@".
 
-       DISPLAY "COMPTEUR : " LK-COMPTEUR.
 
-       IF LK-COMPTEUR = 1
+       IF LK-COMPTEUR NOT = 1 OR LK-ID-UTILISATEUR NOT NUMERIC
            
-           MOVE 0 TO RETURN-CODE
-
-       ELSE 
            MOVE 1 TO RETURN-CODE
+               
+       ELSE  
+           IF LK-COMPTEUR = 1
+               MOVE 0 TO RETURN-CODE
+           END-IF 
        END-IF.
        
 
