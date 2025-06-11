@@ -138,10 +138,12 @@
        PERFORM VARYING WS-INDEX FROM 1 BY 1 
                UNTIL WS-INDEX > WS-MAX
 
-           CALL "validate" USING WS-EMAIL-UTILISATEUR(WS-INDEX), 
+           CALL "validate" USING WS-ID-UTILISATEUR(WS-INDEX),
+                                 WS-EMAIL-UTILISATEUR(WS-INDEX), 
                                  WS-COMPTEUR
+           END-CALL
 
-           DISPLAY RETURN-CODE
+           DISPLAY "RETURN-CODE : " RETURN-CODE
            MOVE RETURN-CODE TO WS-RETURN-CODE(WS-INDEX)
             
        
@@ -157,7 +159,8 @@
        
        PERFORM VARYING WS-INDEX FROM 1 BY 1 
                UNTIL WS-INDEX > WS-MAX
-           IF RETURN-CODE(WS-INDEX) = 1
+
+           IF WS-RETURN-CODE(WS-INDEX) = 1
                 STRING "[Ligne " WS-INDEX "] " 
                        "Erreur : " 
                        "Email invalide " 
@@ -167,8 +170,11 @@
                 END-STRING 
                 WRITE F-SORTIE 
            END-IF
+
        END-PERFORM.
+
        CLOSE FICHIER-SORTIE.
        
        0400-ECRITURE-FIN.
        EXIT.
+
