@@ -1,5 +1,6 @@
 CREATE TABLE UTILISATEURS (
     id  SERIAL PRIMARY KEY,
     nom CHAR(50),
-    mdp CHAR(50)
+    mdp CHAR(50),
+    CHECK (LENGTH(mdp)>=8)
 );

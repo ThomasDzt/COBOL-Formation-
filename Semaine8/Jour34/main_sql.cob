@@ -21,6 +21,8 @@ OCESQL*EXEC SQL BEGIN DECLARE SECTION END-EXEC.
        01  WS-MOT-PASSE         PIC X(30) VALUE "mdp".
        01  WS-NOM-BASE          PIC X(15) VALUE "exo_database". 
 OCESQL*EXEC SQL END DECLARE SECTION END-EXEC.
+       
+       01 WS-LONGUEUR-MDP          PIC 9(02).
 
 OCESQL*EXEC SQL INCLUDE SQLCA END-EXEC.
 OCESQL     copy "sqlca.cbl".
@@ -76,8 +78,10 @@ OCESQL     END-CALL.
       ******************************************************************
 
        0100-INSERTION-DEBUT.
-       CALL "insert" USING WS-NOM-UTILISATEUR,
+       CALL "insert" USING WS-NOM-UTILISATEUR
                            WS-MDP-UTILISATEUR
+                           
+       
        END-CALL.
 
 

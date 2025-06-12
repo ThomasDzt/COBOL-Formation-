@@ -21,6 +21,8 @@
        01  WS-MOT-PASSE         PIC X(30) VALUE "mdp".
        01  WS-NOM-BASE          PIC X(15) VALUE "exo_database". 
        EXEC SQL END DECLARE SECTION END-EXEC.
+       
+       01 WS-LONGUEUR-MDP          PIC 9(02).
 
        EXEC SQL INCLUDE SQLCA END-EXEC.
 
@@ -57,8 +59,10 @@
       ******************************************************************
 
        0100-INSERTION-DEBUT.
-       CALL "insert" USING WS-NOM-UTILISATEUR,
+       CALL "insert" USING WS-NOM-UTILISATEUR
                            WS-MDP-UTILISATEUR
+                           
+       
        END-CALL.
 
 
