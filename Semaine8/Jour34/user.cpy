@@ -1,0 +1,3 @@
+       01 :PREFIX:-NOM-UTILISATEUR       PIC X(50).
+       01 :PREFIX:-MDP-UTILISATEUR       PIC X(50).
+       
