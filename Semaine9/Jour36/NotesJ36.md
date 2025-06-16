@@ -63,3 +63,156 @@ On accède à ISPF via la commande "ispf"
 - ALLOCATE : créer un nouveau dataset 
 - RENAME : renommer un fichier
 - SEND : envoyer un message à un utilisateur
+- =X ou logoff pour quitter la session
+- help aide sur des commandes TSO
+- PROFILE : paramètres utilisateur
+
+Messages d'erreur et message système :
+
+Problème de syntaxe, allocation de fichier possible.
+
+--> ABEND (abnormal end)
+
+ISPF : parcourir le catalogue, soumettre les jobs
+
+https://www.lacommunauteducobol.com/abend/#:~:text=En%20informatique%2C%20un%20abend%20ou,%2F360%20et%20z%2FOS.
+
+
+**ISPF Primary Option Menu**
+**Exercice 1**
+
+- 0 Settings 
+- 1 View : pour afficher les datas en source
+- 2 Edit : Créer ou changer de data source
+- 3 Utilities : pour lancer les fonctions utilitaires 
+    - 1  Library  
+    - 2  Data Set
+    - 3  Move/Copy
+    - 4  DSlist
+    - 5  Reset
+    - 6  Hardcopy
+    - 8  Outlist
+    - 9  Commands
+    - 11 Format  
+    - 12 SuperC
+    - 13 SuperCE
+    - 14 Search-For
+    - 15 Search-ForE
+    - 16 Tables
+- 4 Foreground : Interactive langauge processing
+- 5 Batch : pour soumettre des jobs
+- 6 Command : pour entrer les commandes TSO ou Workstation
+
+
+Bonus : 
+J'ai fait 6 --> PROFILE --> Entrée et voilà 
+
+
+**Exercice 2**
+
+3.4 --> DSlist 
+J'ai entré USERID.* dans DSName et j'obtiens la liste suivante :
+
+- USERID.INPUT             
+- USERID.JCL               
+- USERID.JCL3OUT           
+- USERID.LOAD              
+- USERID.OUTPUT            
+- USERID.SOURCE            
+- USERID.SPFLOG1.LIST      
+- USERID.S0W1.ISPF.ISPPROF 
+- USERID.S0W1.SPFLOG1.LIST 
+
+
+Bonus : 
+
+Dans la DSlist j'ai entré SORT CREATED pour trier par date et SORT NAME pour trier par nom.
+
+Voir : https://www.ibm.com/docs/en/zos/2.4.0?topic=commands-sort-command
+
+
+**Exercice 3**
+
+Quand je fais 3.2 j'arrive dans la section DATA SET où je dois renseigner le DSName puis entrer A dans la ligne de commande pour créer le dataset.
+
+Ensuite les paramètres LRECL, RECFM, BLKSIZE correspondent respectivement au record length, record format et au block size.
+
+Il faut aussi choisir le type de dataset. Ici on veut un PDS donc on va entrer "PDS". Cependant cela crée un fichier alors que nous voulons une "bibliothèque". Il faut donc entrer "LIBRARY".
+
+On peut vérifier les datasets créés à l'aide de la section 3.4 (DSlist). Une fois l'USERID.* spécifié comme liste, je peux entrer différentes commandes devant le nom des datasets (dans la colonne command) : V pour View, i pour Info, D pour delete.
+
+
+**Exercice 4**
+
+J'avais 2 colonnes de numéros comme suit:
+
+000100 000100 IDENTIFICATION DIVISION.
+000200 000200 PROGRAM-ID. HELLOCOB.
+
+(Infos de chatGPT)
+Le premier 000100 est le numéro de séquence COBOL (dans le fichier)
+
+Le deuxième 000100 est l'indicateur de ligne de l'éditeur ISPF (non stocké, pour t’aider à naviguer)
+
+Ici je peux utiliser plusieurs options :
+
+- RESET dans la commande ISPF pour masquer temporairement les messages en rouge
+
+- NUM OFF pour désactiver l’affichage du numéro ISPF à gauche (mais pas celui dans le fichier)
+
+- NUM ON pour les remettre
+
+
+**Exercice 5**
+
+Pour copier un membre entre des datasets, j'ai ouvert le menu 3.3 (Move/Copy).
+Ensuite j'ai eu à remplir la section "FROM dataset" :
+
+Project : mon USERID
+Group : SOURCE
+Type  : COBOL
+Member: HELLOCOB (le membre à copier)
+
+
+Puis la section "TO" qui est donc USERID.SOURCE.COPIE
+**Bonus**
+
+J'ai copié le JCL1 de mon dataset USERID.JCL dans mon dataset USERID.JCL.LIB
+
+
+Cependant mes datasets n'étaient pas "catalogués" (?)
+
+Du coup j'ai dû entrer dans la partie "FROM OTHER PDS/SDS" :
+USERID.JCL
+
+Et dans la section "TO" :
+
+Project : mon USERID
+Group : JCL
+Type  : LIB
+Member: JCL1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
