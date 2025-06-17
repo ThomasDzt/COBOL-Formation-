@@ -192,24 +192,73 @@ Group : JCL
 Type  : LIB
 Member: JCL1
 
+**Exercice 6**
+Fait, j'ai créé un dataset USERID.SOURCE.TEST que j'ai rename en USERID.SOURCE.RENAME dans lequel je travaille pour l'exercice 7. J'avais déjà supprimé des datasets quand j'ai essayé de créer des PDS.
+
+
+**Exercice 7**
+
+- 7.1 
+Fait. Note pour plus tard : quand je crée une ligne que je veux laisser vide il faut laisser des espaces avant d'appuyer "entrée" sinon cela va la supprimer directement.
+
+- 7.2
+Fait. Dn supprime à partir de la ligne où on écrit et supprime n lignes. 
+
+DD...DD supprime les lignes comprises entre les 2 DD (les lignes incluses où on a écrit DD incluses)
+
+- 7.3 
+Similaire à D, répète la ligne précisée (où on a écrit R en commande) en dessous de celle-ci. Les lignes répétées sont insérées et ne suppriment pas les lignes initialement sous les lignes que l'on souhaite répéter.
+
+**NB :** Lorsqu'on ajoute A/B/O pour les commandes R, C, M, etc. A signifie **AFTER**, B **BEFORE** et O **OVERRIDE**. Donc mettre A exécutera la commande sur la ligne suivante, B la ligne d'avant et O le fera sur la ligne précisée.
 
 
 
 
+- 7.4
+Similaire aux 2 précédents, C copie la ligne actuelle et ensuite la colle à la ligne précisée. 
+
+**ATTENTION** : J'ai essayé C sur une ligne et O sur une autre qui était déjà remplie mais cela n'a pas écrit par-dessus. J'ai fait ce test :
+
+    C    OVERWRITTEN
+    O    BONJOUR
+
+Et j'obtiens ça : BONJOURTTEN
+
+Cela n'a pas écrit par-dessus le "BONJOUR". En fait j'ai l'impression que cela superpose juste les données.
+
+Second test: 
+
+    C    OVER
+    O        RIDE
+
+Et j'obtiens : OVERRIDE.
+
+
+- 7.5 
+Fait. Même principe que C.
 
 
 
+- 7.6
+Fait. RESET masque les messages d'erreur (avec les pending par exemple) 
+UNDO = Ctrl Z --> annule la dernière action (Pour pouvoir l'utiliser il faut taper RECOVERY ON avant)
+
+CAN : pour cancel (à voir plus précisément)
 
 
+- 7.7 et 7.8
+Fait.
 
 
+- 7.9 
+Fait dans le membre 'HELLOCOB' du dataset RENAME dans lequel je travaille depuis le début.
+
+- 7.10 
+OK. A voir ce qu'est une macro sur ISPF.
 
 
-
-
-
-
-
+- 7.11 
+Fait.
 
 
 
