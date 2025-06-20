@@ -103,6 +103,14 @@ Mon JCL :
  //TEMPOFI2  DD DSN=*.STEP1.TEMPOFIC,DISP=SHR 
 </pre>
 
-Ici je crée d'abord le fichier temporaire à l'étape 1 comme dans l'exercice 2. 
+Ici je crée d'abord le fichier temporaire à l'étape 1 comme dans l'exercice 2. Ensuite à l'étape 2(toujours en exécutant IEFBR14), on réutilise le dataset de STEP1 nommé TEMPOFIC.
 
+<pre>
+ //TEMPOFI2  DD DSN=*.STEP1.TEMPOFIC,DISP=SHR 
+</pre>
+
+Ici: 
+- *. → le job courant (ici TESTJOB5)
+- STEP1 → nom du step où le dataset a été créé
+- TEMPOFIC → le DDNAME du fichier dans ce step
 
