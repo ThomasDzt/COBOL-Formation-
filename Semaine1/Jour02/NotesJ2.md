@@ -77,7 +77,7 @@ DATA DIVISION.
 FILE SECTION.
 FD STUDENT-FILE.
 01 F-STUDENT-RECORD.
-    05 F-STUDENT-ID    PIC 9(5).
+    05 F-STUDENT-ID    PIC 9(05).
     05 F-STUDENT-NAME  PIC X(20).
 
 PROCEDURE DIVISION.
@@ -107,7 +107,7 @@ Exemple :
       88 WS-HOMME               VALUE 'M'.
       88 WS-FEMME               VALUE 'F'.
 
-77 WS-COMPTEUR      PIC 9(4)    VALUE 0.
+77 WS-COMPTEUR      PIC 9(04)    VALUE 0.
 ``` 
 
 - **LINKAGE SECTION :** Section qui relie le programme principal et ses sous-programmes. Dedans on déclare les variables qui vont communiquer avec les sous-programmes. Les sous-programmes sont appelés en **PROCEDURE DIVISION** à l'aide de l'instruction **CALL** (parfois suivi de **USING + variables** lorsque nécessaire).
