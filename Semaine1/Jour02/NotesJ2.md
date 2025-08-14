@@ -14,6 +14,8 @@
 **Nettoyer le terminal :** `clear`    
 **Pour ouvrir le code dans le terminal :** clic droit dans le dossier où se trouve le fichier .cbl
 
+<br><br/>
+
 
 ## Généralités en COBOL
 
@@ -31,8 +33,7 @@ Un code COBOL s'écrit sur **80 colonnes**.
 
 **Colonnes 73 à 80 :** utilisées pour l’identification mais non contrôlées.
 
-
-
+<br><br/>
 
 ## Structure d'un programme COBOL
 
@@ -118,5 +119,64 @@ Exemple :
 
 C'est ici que sont écrites toutes les instructions du programme, c'est-à-dire ce que va faire le programme. Chaque instruction commence par un **verbe/mot-clé COBOL** et se termine par un **point (.)** ou par un **END-terminator**.     
 Les instructions peuvent être regroupées en **paragraphes**.    
-La PROCEDURE DIVISION doit être terminée par un **STOP RUN** (ou un **EXIT PROGRAM** dans le cas d'un sous-programme).
+La PROCEDURE DIVISION doit être terminée par un **STOP RUN** (ou un **EXIT PROGRAM** dans le cas d'un sous-programme).  
+
+<br><br/>
+
+## Notions vues
+
+### Instructions ACCEPT et DISPLAY  
+
+**ACCEPT :** permet la saisie d'une valeur dans une variable depuis le termminal.   
+
+**DISPLAY :** permet l'affichage de la valeur d'une variable.   
+
+### Opérations arithmétiques 
+
+**ADD :** permet d'effectuer des additions entre plusieurs nombres.       
+```
+ADD VARIABLE1 TO VARIABLE2
+```
+<br><br/>
+
+**SUBTRACT :** permet d'effectuer des soustractions entre plusieurs nombres.
+
+```
+SUBTRACT VARIABLE1 FROM VARIABLE2
+```
+<br><br/>
+
+**MULTIPLY :** permet d'effectuer des produits entre des nombres.     
+
+```
+MULTIPLY VARIABLE1 BY VARIABLE2
+```
+<br><br/>
+
+**DIVIDE :** permet d'effectuer des divisions entre des nombres.     
+
+```
+DIVIDE VARIABLE1 BY VARIABLE2   pour diviser VARIABLE1 par VARIABLE2
+
+ou
+
+DIVIDE VARIABLE1 INTO VARIABLE2   pour diviser VARIABLE2 par VARIABLE1
+
+```
+<br><br/>
+
+**NB :** Pour toutes ces opérations, on peut utiliser le **GIVING** afin de stocker le résultat dans une variable.
+
+```
+ADD VARIABLE1 TO VARIABLE2 GIVING SOMME
+SUBTRACT VARIABLE1 FROM VARIABLE2 GIVING DIFFERENCE
+MULTIPLY VARIABLE1 BY VARIABLE2 GIVING PRODUIT
+DIVIDE VARIABLE1 BY VARIABLE2 GIVING QUOTIENT
+```
+
+On peut aussi stocker le reste d'une division dans une variable avec **REMAINDER** :
+
+```
+DIVIDE VARIABLE1 BY VARIABLE2 GIVING QUOTIENT REMAINDER RESTE
+```
 
