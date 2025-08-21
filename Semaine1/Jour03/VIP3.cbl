@@ -68,32 +68,20 @@
 
            IF WS-CLIENT-VIP
                
-              PERFORM 0300-SAISIE-SOLDE-DEB
-                 THRU 0300-SAISIE-SOLDE-FIN
+               PERFORM 0300-SAISIE-SOLDE-DEB
+                  THRU 0300-SAISIE-SOLDE-FIN
 
-               EVALUATE WS-SOLDE             
-                   WHEN > 10000
-                       DISPLAY "Vous êtes un client premium."
-
-                   WHEN OTHER 
-                       DISPLAY "Vous êtes un client privilégié."
-
-               END-EVALUATE 
+               PERFORM 0400-VERIF-SOLDE-VIP-DEB
+                  THRU 0400-VERIF-SOLDE-VIP-FIN
 
            ELSE
                IF WS-CLIENT-STD
                    
-                   PERFORM 0300-SAISIE-SOLDE-DEB
-                      THRU 0300-SAISIE-SOLDE-FIN
+                  PERFORM 0300-SAISIE-SOLDE-DEB
+                     THRU 0300-SAISIE-SOLDE-FIN
 
-                   EVALUATE  WS-SOLDE 
-                       WHEN > 5000
-                           DISPLAY "Vous êtes un client fidèle."
-       
-                       WHEN OTHER  
-                           DISPLAY "Vous êtes un client standard."
-       
-                   END-EVALUATE  
+                  PERFORM 0500-VERIF-SOLDE-STD-DEB
+                     THRU 0500-VERIF-SOLDE-STD-FIN
 
                ELSE 
                    DISPLAY "Veuillez choisir une option entre 1 et 2."
@@ -120,4 +108,40 @@
            EXIT.
        0300-SAISIE-SOLDE-FIN. 
       *-----------------------------------------------------------------
+
+       0400-VERIF-SOLDE-VIP-DEB.
+           
+           EVALUATE WS-SOLDE             
+               WHEN > 10000
+                   DISPLAY "Vous êtes un client premium."
+       
+               WHEN OTHER 
+                   DISPLAY "Vous êtes un client privilégié."
+       
+           END-EVALUATE.
+
+           EXIT.
+       0400-VERIF-SOLDE-VIP-FIN.
+      *-----------------------------------------------------------------
+
+       0500-VERIF-SOLDE-STD-DEB.
+
+           EVALUATE  WS-SOLDE 
+               WHEN > 5000
+                   DISPLAY "Vous êtes un client fidèle."
+       
+               WHEN OTHER  
+                   DISPLAY "Vous êtes un client standard."
+       
+           END-EVALUATE.
+
+           EXIT.
+
+       0500-VERIF-SOLDE-STD-FIN.
+
+      *-----------------------------------------------------------------
+
+
+
+
 
