@@ -47,49 +47,80 @@
 
       * Boucle tant que le nombre entré n'est pas 0.
            PERFORM UNTIL WS-NBR = 0
+       
+               PERFORM 0150-SAISIE-NOMBRE-DEB
+                  THRU 0150-SAISIE-NOMBRE-FIN
 
-      * Saisie du nombre par l'utilisateur. 
-               DISPLAY "Entrez un nombre (de longueur max 3) :"
-               ACCEPT WS-SSI-UTI
+               PERFORM 0160-CONTROLE-SAISIE-DEB
+                  THRU 0160-CONTROLE-SAISIE-FIN
 
-      * Contrôle de saisie sur le nombre entré : les valeurs saisies
-      * doivent être numérique et de longueur inférieure ou égale à 3. 
-
-               IF FUNCTION TRIM(WS-SSI-UTI) IS NUMERIC  
-               AND FUNCTION LENGTH(FUNCTION TRIM(WS-SSI-UTI)) <= 3 
-
-      * Affectation de la valeur contrôlée à une variable numérique.
-                   MOVE FUNCTION TRIM(WS-SSI-UTI) TO WS-NBR
-               
-      * Si la valeur saisie ne correspond pas aux conditions, un 
-      * message d'erreur est affiché.
-
-               ELSE 
-               
-                   DISPLAY "Erreur, veuillez saisir un nombre de"
-                       " longueur maximale 3"
-               END-IF
-
-      * Alimentation de la variable correspondant au nombre maximal 
-      * entré.
-               IF WS-NBR > WS-MAX 
-                   MOVE WS-NBR TO WS-MAX
-               END-IF 
+               PERFORM 0170-ALIMENTATION-MAX-DEB
+                  THRU 0170-ALIMENTATION-MAX-FIN
 
            END-PERFORM.
-
 
            EXIT.
 
        0100-BOUCLE-MAX-FIN.
 
       *-----------------------------------------------------------------
+       
+       0150-SAISIE-NOMBRE-DEB.
 
+      * Saisie du nombre par l'utilisateur. 
+           DISPLAY "Entrez un nombre (de longueur max 3) :".
+           ACCEPT WS-SSI-UTI.
+
+           EXIT.
+       
+       0150-SAISIE-NOMBRE-FIN.
+
+      *-----------------------------------------------------------------
+
+       0160-CONTROLE-SAISIE-DEB.
+       
+      * Contrôle de saisie sur le nombre entré : les valeurs saisies
+      * doivent être numérique et de longueur inférieure ou égale à 3. 
+
+           IF FUNCTION TRIM(WS-SSI-UTI) IS NUMERIC  
+           AND FUNCTION LENGTH(FUNCTION TRIM(WS-SSI-UTI)) <= 3 
+
+      * Affectation de la valeur contrôlée à une variable numérique.
+               MOVE FUNCTION TRIM(WS-SSI-UTI) TO WS-NBR
+               
+      * Si la valeur saisie ne correspond pas aux conditions, un 
+      * message d'erreur est affiché.
+
+           ELSE 
+               
+               DISPLAY "Erreur, veuillez saisir un nombre de"
+                       " longueur maximale 3"
+           END-IF.
+
+           EXIT.
+           
+       0160-CONTROLE-SAISIE-FIN.
+
+      *-----------------------------------------------------------------
+
+       0170-ALIMENTATION-MAX-DEB.
+
+      * Alimentation de la variable correspondant au nombre maximal 
+      * entré.
+              
+           IF WS-NBR > WS-MAX 
+               MOVE WS-NBR TO WS-MAX
+           END-IF. 
+
+           EXIT.
+       0170-ALIMENTATION-MAX-FIN.
+
+      *-----------------------------------------------------------------
        0200-AFFICHE-MAX-DEB.
 
       * Edition et affichage du plus grand nombre saisi par
       * l'utilisateur.
-      
+
            MOVE WS-MAX TO WS-MAX-EDI.
            DISPLAY "Plus grand nombre entré : " 
                    FUNCTION TRIM (WS-MAX-EDI).
@@ -99,4 +130,4 @@
        0200-AFFICHE-MAX-FIN.
 
       *-----------------------------------------------------------------
-       
+      
