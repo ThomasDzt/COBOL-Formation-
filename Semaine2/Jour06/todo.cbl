@@ -130,9 +130,9 @@
                        PERFORM 0300-AFFICHE-TACHE-DEB
                           THRU 0300-AFFICHE-TACHE-FIN
 
-      *            WHEN 3
-      *                PERFORM 0400-SUPPRIM-TACHE-DEB
-      *                   THRU 0400-SUPPRIM-TACHE-FIN
+                   WHEN 3
+                       PERFORM 0400-SUPPRIM-TACHE-DEB
+                          THRU 0400-SUPPRIM-TACHE-FIN
 
                    WHEN 4
                        DISPLAY "Fermeture du programme."
@@ -158,27 +158,37 @@
                PERFORM 0210-INSERTION-TACHE-DEB
                   THRU 0210-INSERTION-TACHE-FIN
                
-               SET WS-ERR-SAISIE-O TO TRUE 
+               PERFORM 0220-RETOUR-MENU-DEB
+                  THRU 0220-RETOUR-MENU-FIN
 
-               PERFORM UNTIL WS-ERR-SAISIE-N
-
-                   DISPLAY "Revenir au menu principal ? (O/N)"
-                   ACCEPT WS-RETOUR
-
-                   IF WS-RETOUR NOT = "O" AND WS-RETOUR NOT = "N"
-                       DISPLAY "Erreur de saisie"
-                   ELSE 
-                       SET WS-ERR-SAISIE-N TO TRUE 
-                   END-IF 
-
-               END-PERFORM     
            END-PERFORM.
 
            EXIT.
        0200-AJOUT-TACHE-FIN.
 
       *-----------------------------------------------------------------
+           
+           0220-RETOUR-MENU-DEB.
+
+           SET WS-ERR-SAISIE-O TO TRUE. 
+
+           PERFORM UNTIL WS-ERR-SAISIE-N
+
+               DISPLAY "Revenir au menu principal ? (O/N)"
+               ACCEPT WS-RETOUR
        
+               IF WS-RETOUR NOT = "O" AND WS-RETOUR NOT = "N"
+                   DISPLAY "Erreur de saisie"
+               ELSE 
+                   SET WS-ERR-SAISIE-N TO TRUE 
+               END-IF 
+
+           END-PERFORM.
+
+           EXIT.
+           0220-RETOUR-MENU-FIN.
+      *-----------------------------------------------------------------
+
        0210-INSERTION-TACHE-DEB.
            
            SET WS-TACHE-AJOUT-N TO TRUE.
@@ -207,11 +217,41 @@
                IF WS-TACHE-EXISTE(WS-IDX)= "O"
                    DISPLAY WS-NOM-TACHE(WS-IDX)
                END-IF 
-               
+
            END-PERFORM.
 
            EXIT.
 
        0300-AFFICHE-TACHE-FIN.
 
+      *-----------------------------------------------------------------
 
+       0400-SUPPRIM-TACHE-DEB.
+           
+           SET WS-RETOUR-N TO TRUE.
+
+           PERFORM UNTIL WS-RETOUR-O 
+
+               DISPLAY "Saisissez la tache à supprimer : "
+               ACCEPT WS-NUM-TACHE
+
+               MOVE SPACES TO WS-NOM-TACHE(WS-NUM-TACHE)
+               
+               PERFORM VARYING WS-IDX FROM WS-NUM-TACHE BY 1 
+               UNTIL WS-TACHE-EXISTE(WS-IDX)= "N"
+                   
+                   MOVE WS-NOM-TACHE(WS-IDX + 1) TO WS-NOM-TACHE(WS-IDX)
+
+                   IF WS-NOM-TACHE(WS-IDX + 1) = SPACES 
+                       MOVE "N" TO WS-TACHE-EXISTE(WS-IDX)
+
+                   END-IF 
+               END-PERFORM 
+               
+               PERFORM 0220-RETOUR-MENU-DEB
+                  THRU 0220-RETOUR-MENU-FIN
+
+           END-PERFORM.
+           EXIT.
+       0400-SUPPRIM-TACHE-FIN.
+      *-----------------------------------------------------------------
