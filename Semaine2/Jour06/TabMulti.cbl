@@ -10,9 +10,9 @@
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
-       01 WS-NBR            PIC 9(02).
-       01 WS-PRD            PIC 9(04).
-       01 WS-IDX            PIC 9(02).
+       01 WS-NBR           PIC 9(02).
+       01 WS-PRD           PIC 9(04).
+       01 WS-IDX           PIC 9(02).
 
 
        01 WS-NBR-EDI       PIC Z(02).
