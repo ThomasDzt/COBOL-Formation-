@@ -19,6 +19,7 @@
        01 WS-ENSEMBLE-NOTES.
            05 WS-LISTE-NOTES OCCURS 10 TIMES.
                10 WS-NOTE          PIC 9(02)V9(02).
+               10 WS-SAISIE-NOTE   PIC X(05).
 
        77 WS-IDX           PIC 9(02).
        01 WS-MOY-NOTE      PIC 9(02)V9(02).
@@ -48,7 +49,7 @@
 
       * Variables d'affichage.
        01 WS-VIDE              PIC X(19)       VALUE SPACES.
-       01 WS-VIDE-2            PIC X(16)       VALUE SPACES.
+       01 WS-VIDE-2            PIC X(09)       VALUE SPACES.
 
        01 WS-CADRE             PIC X(50)       VALUE ALL "=".
 
@@ -75,14 +76,56 @@
        0050-SAISIE-NOTE-DEB.
 
            PERFORM VARYING WS-IDX FROM 1 BY 1 UNTIL WS-IDX > 10
-               DISPLAY "Entrez une note : " WITH NO ADVANCING 
-               ACCEPT WS-NOTE(WS-IDX)
+               
+               
+               SET WS-ERR-SAISIE-O TO TRUE 
+
+               PERFORM UNTIL WS-ERR-SAISIE-N
+
+                   DISPLAY "Entrez la note n° " WS-IDX " : " 
+                   WITH NO ADVANCING 
+                   ACCEPT WS-SAISIE-NOTE(WS-IDX)
+                   
+                   PERFORM 0055-CONTROLE-SAISIE-DEB
+                      THRU 0055-CONTROLE-SAISIE-FIN 
+
+                   
+               END-PERFORM 
            END-PERFORM.
 
            EXIT.
 
        0050-SAISIE-NOTE-FIN.
 
+      *-----------------------------------------------------------------
+
+       0055-CONTROLE-SAISIE-DEB.
+           
+           IF WS-SAISIE-NOTE(WS-IDX)(1:2) IS NUMERIC 
+           AND WS-SAISIE-NOTE(WS-IDX)(4:2) IS NUMERIC  
+           AND WS-SAISIE-NOTE(WS-IDX)(3:1) = "."
+               
+               IF FUNCTION NUMVAL (WS-SAISIE-NOTE(WS-IDX)) >= 0 
+               AND FUNCTION NUMVAL (WS-SAISIE-NOTE(WS-IDX)) <= 20
+
+                   MOVE FUNCTION NUMVAL (WS-SAISIE-NOTE(WS-IDX))
+                   TO WS-NOTE(WS-IDX)
+           
+                   SET WS-ERR-SAISIE-N TO TRUE 
+               
+               ELSE 
+                   DISPLAY "Note invalide : veuillez saisir une note"
+                           " entre 00.00 et 20.00"
+               END-IF 
+           ELSE 
+               DISPLAY "Erreur de saisie, " 
+                       "veuillez saisir une note au format XX.XX ."
+       
+           END-IF 
+
+           EXIT.
+
+       0055-CONTROLE-SAISIE-FIN.
       *-----------------------------------------------------------------
 
        0100-MENU-DEB.
