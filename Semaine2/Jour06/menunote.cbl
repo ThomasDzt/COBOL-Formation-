@@ -16,9 +16,14 @@
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
+      
        01 WS-ENSEMBLE-NOTES.
            05 WS-LISTE-NOTES OCCURS 10 TIMES.
+
+      * Notes enregistrées après contrôle de saisie
                10 WS-NOTE          PIC 9(02)V9(02).
+
+      * Notes saisies par l'utilisateur 
                10 WS-SAISIE-NOTE   PIC X(05).
 
        77 WS-IDX           PIC 9(02).
