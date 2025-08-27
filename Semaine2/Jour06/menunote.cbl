@@ -26,10 +26,19 @@
       * Notes saisies par l'utilisateur 
                10 WS-SAISIE-NOTE   PIC X(05).
 
+      * Index pour parcourir la liste des notes.
        77 WS-IDX           PIC 9(02).
+
+      * Moyenne des notes. 
        01 WS-MOY-NOTE      PIC 9(02)V9(02).
+
+      * Somme des notes, utilisée pour le calcul de la moyenne. 
        01 WS-SOMME         PIC 9(03)V9(02).
+
+      * Note minimale enregistrée dans la liste. 
        01 WS-NOTE-MIN      PIC 9(02)V9(02).
+
+      * Note maximale enregistrée dans la liste. 
        01 WS-NOTE-MAX      PIC 9(02)V9(02). 
 
       * Variable représentant l''option choisie par l'utilisateur. 
@@ -63,7 +72,7 @@
 
        PROCEDURE DIVISION.
 
-
+      * Saisie des notes par l'utilisateur.
            PERFORM 0050-SAISIE-NOTE-DEB
               THRU 0050-SAISIE-NOTE-FIN.
 
@@ -80,11 +89,13 @@
        
        0050-SAISIE-NOTE-DEB.
 
+      * Boucle parcourant la liste des notes à saisir.
            PERFORM VARYING WS-IDX FROM 1 BY 1 UNTIL WS-IDX > 10
                
-               
+      * Initialisation du flag de contrôle d'erreur de saisie.        
                SET WS-ERR-SAISIE-O TO TRUE 
 
+      * Boucle se terminant lorsque la saisie est correcte.
                PERFORM UNTIL WS-ERR-SAISIE-N
 
                    DISPLAY "Entrez la note n° " WS-IDX " : " 
@@ -94,7 +105,6 @@
                    PERFORM 0055-CONTROLE-SAISIE-DEB
                       THRU 0055-CONTROLE-SAISIE-FIN 
 
-                   
                END-PERFORM 
            END-PERFORM.
 
@@ -105,23 +115,31 @@
       *-----------------------------------------------------------------
 
        0055-CONTROLE-SAISIE-DEB.
-           
+      
+      * Vérifie que des caractères numériques ont bien été entrés pour 
+      * la variable de saisie et que le format de note a été respecté.
            IF WS-SAISIE-NOTE(WS-IDX)(1:2) IS NUMERIC 
            AND WS-SAISIE-NOTE(WS-IDX)(4:2) IS NUMERIC  
            AND WS-SAISIE-NOTE(WS-IDX)(3:1) = "."
-               
+
+      * Vérifie que la note saisie est bien comprise entre 0 et 20.         
                IF FUNCTION NUMVAL (WS-SAISIE-NOTE(WS-IDX)) >= 0 
                AND FUNCTION NUMVAL (WS-SAISIE-NOTE(WS-IDX)) <= 20
 
+      * Après validation de la saisie, alimente la variable numérique 
+      * correspondante.
                    MOVE FUNCTION NUMVAL (WS-SAISIE-NOTE(WS-IDX))
                    TO WS-NOTE(WS-IDX)
            
                    SET WS-ERR-SAISIE-N TO TRUE 
-               
+
+      * Si la note saisie n'est pas comprise entre 0 et 20.          
                ELSE 
                    DISPLAY "Note invalide : veuillez saisir une note"
                            " entre 00.00 et 20.00"
                END-IF 
+
+      * Si la saisie n'est pas conforme.          
            ELSE 
                DISPLAY "Erreur de saisie, " 
                        "veuillez saisir une note au format XX.XX ."
@@ -137,6 +155,8 @@
            
            SET WS-QUITTER-N TO TRUE.
 
+      * Boucle tant que l'utilisateur ne choisit pas de quitter le 
+      * programme.
            PERFORM UNTIL WS-QUITTER-O
 
       * Affiche le menu principal. 
@@ -220,6 +240,7 @@
 
        0200-MOY-NOTES-DEB.
 
+      * Calcul de la moyenne des notes.
            PERFORM 0210-CALC-MOY-NOTE-DEB
               THRU 0210-CALC-MOY-NOTE-FIN.
 
@@ -228,6 +249,8 @@
       * Boucle tant que l'utilisateur ne choisit de retourner au menu
       * principal.
            PERFORM UNTIL WS-RETOUR-O 
+
+      * Affichage de la moyenne.
                PERFORM 0220-AFFICHE-MOY-NOTE-DEB
                   THRU 0220-AFFICHE-MOY-NOTE-FIN
 
@@ -244,13 +267,16 @@
 
        0210-CALC-MOY-NOTE-DEB.
            
+      * Initialisation des variables à utiliser.
            INITIALIZE WS-SOMME.
            INITIALIZE WS-MOY-NOTE.
 
+      * Somme des notes saisies.
            PERFORM VARYING WS-IDX FROM 1 BY 1 UNTIL WS-IDX > 10
                ADD WS-NOTE(WS-IDX) TO WS-SOMME
            END-PERFORM. 
- 
+
+      * Calcul de la moyenne à l'aide de la somme.
            DIVIDE WS-SOMME BY 10 GIVING WS-MOY-NOTE.
 
            EXIT.
@@ -319,8 +345,12 @@
 
        0310-CHERCHE-MIN-DEB.
 
+      * Initialisation du minimum à la valeur maximale possible.
            MOVE 20 TO WS-NOTE-MIN.
 
+      * Boucle de recherche de la note minimale, à chaque fois qu'une 
+      * note est inférieure à la variable du minimum, cette dernière 
+      * prend la valeur de la note.  
            PERFORM VARYING WS-IDX FROM 1 BY 1 UNTIL WS-IDX > 10
                IF WS-NOTE(WS-IDX) < WS-NOTE-MIN
                    MOVE WS-NOTE(WS-IDX) TO WS-NOTE-MIN
@@ -369,8 +399,12 @@
 
        0410-CHERCHE-MAX-DEB.
 
+      * Initialisation du maximum à la valeur minimale possible.
            MOVE 0 TO WS-NOTE-MAX.
 
+      * Boucle de recherche de la note maximale, à chaque fois qu'une 
+      * note est supérieure à la variable du maximum, cette dernière 
+      * prend la valeur de la note.  
            PERFORM VARYING WS-IDX FROM 1 BY 1 UNTIL WS-IDX > 10
                IF WS-NOTE(WS-IDX) > WS-NOTE-MAX
                    MOVE WS-NOTE(WS-IDX) TO WS-NOTE-MAX
