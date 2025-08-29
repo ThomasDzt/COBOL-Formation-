@@ -44,7 +44,7 @@ Un programme COBOL est constitué de **4 divisions**.
 Carte d'identité du programme. Permet d'avoir les informations sur le nom du programme, du programmeur et la date d'écriture du programme.  
 
 Exemple : 
-```
+```cobol
 IDENTIFICATION DIVISION.
 PROGRAM-ID. Program.
 AUTHOR. Thomas.
@@ -61,7 +61,7 @@ Spécifié en formation pour utiliser l'**INPUT-OUTPUT SECTION**.
 **FILE-CONTROL :** Indique quels fichiers seront utilisés dans le programme et comment ils sont reliés aux fichiers (physiques) sur les périphériques (Disque, bande, imprimante).  
 
 Exemple : 
-```
+```cobol
 ENVIRONMENT DIVISION.
 INPUT-OUTPUT SECTION.
 FILE-CONTROL.
@@ -73,7 +73,7 @@ La structure des enregistrements du fichiers est décrite dans la **FILE SECTION
 
 Suite de l'exemple :
 
-```
+```cobol
 DATA DIVISION.
 FILE SECTION.
 FD STUDENT-FILE.
@@ -99,7 +99,7 @@ C'est ici qu'on déclare les variables à utiliser ou encore qu'on décrit les f
 - **WORKING-STORAGE SECTION :** Section dans laquelle on déclare les variables de travail. Il y a 2 types de variables, **les variables élémentaires** (de niveau hiérarchique 01 ou 77) et les **groupes de variables** (allant du niveau 02 à 49).    
 
 Exemple : 
-```
+```cobol
 01 WS-CLIENT.
    05 WS-NOM        PIC X(20).
    05 WS-PRENOM     PIC X(15).
@@ -134,28 +134,28 @@ La PROCEDURE DIVISION doit être terminée par un **STOP RUN** (ou un **EXIT PRO
 ### Opérations arithmétiques 
 
 **ADD :** permet d'effectuer des additions entre plusieurs nombres.       
-```
+```cobol
 ADD VARIABLE1 TO VARIABLE2
 ```
 <br><br/>
 
 **SUBTRACT :** permet d'effectuer des soustractions entre plusieurs nombres.
 
-```
+```cobol
 SUBTRACT VARIABLE1 FROM VARIABLE2
 ```
 <br><br/>
 
 **MULTIPLY :** permet d'effectuer des produits entre des nombres.     
 
-```
+```cobol
 MULTIPLY VARIABLE1 BY VARIABLE2
 ```
 <br><br/>
 
 **DIVIDE :** permet d'effectuer des divisions entre des nombres.     
 
-```
+```cobol
 DIVIDE VARIABLE1 BY VARIABLE2   pour diviser VARIABLE1 par VARIABLE2
 
 ou
@@ -167,7 +167,7 @@ DIVIDE VARIABLE1 INTO VARIABLE2   pour diviser VARIABLE2 par VARIABLE1
 
 **NB :** Pour toutes ces opérations, on peut utiliser le **GIVING** afin de stocker le résultat dans une variable.
 
-```
+```cobol
 ADD VARIABLE1 TO VARIABLE2 GIVING SOMME
 SUBTRACT VARIABLE1 FROM VARIABLE2 GIVING DIFFERENCE
 MULTIPLY VARIABLE1 BY VARIABLE2 GIVING PRODUIT
@@ -176,7 +176,7 @@ DIVIDE VARIABLE1 BY VARIABLE2 GIVING QUOTIENT
 
 On peut aussi stocker le reste d'une division dans une variable avec **REMAINDER** :
 
-```
+```cobol
 DIVIDE VARIABLE1 BY VARIABLE2 GIVING QUOTIENT REMAINDER RESTE
 ```
 
