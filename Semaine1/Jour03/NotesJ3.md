@@ -8,7 +8,7 @@ Lorsqu'on veut tester une condition on utilise l'instruction **IF** ... **ELSE**
 
 Exemple :
 
-```
+```cobol
 IF WS-NBR GREATER THAN 0 OR EQUAL 0
 
     DISPLAY "Le nombre saisi est positif."
@@ -31,7 +31,7 @@ Lorsqu'on veut tester plus de deux conditions (que l'on peut clairement indiquer
 
 Exemple :
 
-```
+```cobol
 EVALUATE WS-AGE 
 
     WHEN >= 0 AND <= 11
@@ -53,7 +53,7 @@ Il existe une alternative à l'EVALUATE.
 
 #### EVALUATE TRUE *CONDITION*
 
-```
+```cobol
 EVALUATE TRUE  
 
     WHEN WS-AGE >= 0 AND <= 11
