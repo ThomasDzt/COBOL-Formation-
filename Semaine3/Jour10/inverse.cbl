@@ -45,20 +45,17 @@
  
        0100-SAISIE-MOT-DEB.
 
-           DISPLAY "Veuillez saisir un mot : ".
+           DISPLAY "Veuillez saisir un mot : "
+           WITH NO ADVANCING.
            ACCEPT WS-MOT.
            
       * Détermination de la longueur du mot.
            MOVE FUNCTION LENGTH(FUNCTION TRIM(WS-MOT)) TO WS-LONG.
-      
-      * Retrait des espaces restants si le mot saisi fait moins de 10 
-      * caractères (taille de la variable WS-MOT).
-           MOVE FUNCTION TRIM(WS-MOT) TO WS-MOT.
            
            EXIT.
            
-           DISPLAY "Longueur : " WS-LONG.
-           DISPLAY "Mot saisi : " WS-MOT.
+           DISPLAY "Longueur : " WS-LONG ".".
+           DISPLAY "Mot saisi : " FUNCTION TRIM (WS-MOT) ".".
 
        0100-SAISIE-MOT-FIN.
        
