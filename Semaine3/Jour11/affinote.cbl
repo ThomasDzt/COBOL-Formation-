@@ -25,6 +25,7 @@
                    15 WS-ANNEE     PIC 9(04).  
 
 
+       01 WS-NOTE-TEMP         PIC S9(03).
        77 WS-IDX               PIC 9(03).
        01 WS-COMPTE            PIC 9(03).
        
@@ -62,49 +63,19 @@
            OR WS-CONTINUER-N
                
                ADD 1 TO WS-COMPTE
-
-               SET WS-SAISIE-OK-N TO TRUE 
-               PERFORM UNTIL WS-SAISIE-OK-O
-                   DISPLAY "Veuillez saisir une note (0 à 99): " 
-                   WITH NO ADVANCING 
-                   ACCEPT WS-NOTE(WS-IDX)
-       
-                   IF WS-NOTE(WS-IDX) NOT >= 0 
-                   AND WS-NOTE(WS-IDX) NOT <= 99
-                       DISPLAY "La note saisie est incorrecte."
-
-                   ELSE 
-                       SET WS-SAISIE-OK-O TO TRUE
-                   END-IF
-               END-PERFORM 
-
-               DISPLAY "Veuillez saisir un jour : " WITH NO ADVANCING 
-               ACCEPT WS-JOUR(WS-IDX)
                
-               DISPLAY "Veuillez saisir un mois : " WITH NO ADVANCING 
-               ACCEPT WS-MOIS(WS-IDX)
+               PERFORM 0150-SAISIE-NOTE-DEB
+                  THRU 0150-SAISIE-NOTE-FIN
 
-               DISPLAY "Veuillez saisir une année : " WITH NO ADVANCING 
-               ACCEPT WS-ANNEE(WS-IDX)
+               PERFORM 0160-SAISIE-DATE-DEB
+                  THRU 0160-SAISIE-DATE-FIN
                
-               SET WS-SAISIE-OK-N TO TRUE 
+               DISPLAY "Note ajoutée."
 
-               PERFORM UNTIL WS-SAISIE-OK-O
-                   DISPLAY "Continuer ? (O/N)"
-                   ACCEPT WS-CONTINUER
+               PERFORM 0170-CONTINUER-CHOIX-DEB
+                  THRU 0170-CONTINUER-CHOIX-FIN
 
-                   IF WS-CONTINUER NOT = "O" AND WS-CONTINUER NOT = "N"
-                       DISPLAY "Erreur de saisie."
-
-                   ELSE 
-                       SET WS-SAISIE-OK-O TO TRUE 
-                   END-IF 
-               END-PERFORM
-
-               IF WS-CONTINUER-O
-                   DISPLAY "Note ajoutée."
-               
-               ELSE 
+               IF WS-CONTINUER-N
                    DISPLAY "Fin de saisie."
                END-IF 
 
@@ -113,11 +84,126 @@
        0100-SAISIE-FIN.
 
       *-----------------------------------------------------------------
+       
+       0150-SAISIE-NOTE-DEB.
+           
+           SET WS-SAISIE-OK-N TO TRUE. 
+           PERFORM UNTIL WS-SAISIE-OK-O
+               DISPLAY "Veuillez saisir une note (0 à 99): " 
+               WITH NO ADVANCING 
+               ACCEPT WS-NOTE-TEMP
+
+               IF WS-NOTE-TEMP < 0 
+               OR WS-NOTE-TEMP > 99
+                   DISPLAY "La note saisie est incorrecte."
+
+               ELSE 
+                   SET WS-SAISIE-OK-O TO TRUE
+                   MOVE WS-NOTE-TEMP TO WS-NOTE(WS-IDX)
+               END-IF
+           END-PERFORM.
+
+
+           EXIT.
+       0150-SAISIE-NOTE-FIN.
+
+      *-----------------------------------------------------------------
+       
+       0160-SAISIE-DATE-DEB.
+           
+           PERFORM 0164-SAISIE-JOUR-DEB
+              THRU 0164-SAISIE-JOUR-FIN.
+
+           PERFORM 0165-SAISIE-MOIS-DEB
+              THRU 0165-SAISIE-MOIS-FIN.
+
+           PERFORM 0166-SAISIE-ANNEE-DEB
+              THRU 0166-SAISIE-ANNEE-FIN.
+
+
+           EXIT.
+       0160-SAISIE-DATE-FIN.
+      *-----------------------------------------------------------------
+           
+       0164-SAISIE-JOUR-DEB.
+
+           SET WS-SAISIE-OK-N TO TRUE.
+
+           PERFORM UNTIL WS-SAISIE-OK-O
+
+               DISPLAY "Veuillez saisir un jour : " WITH NO ADVANCING 
+               ACCEPT WS-JOUR(WS-IDX)
+
+               IF  WS-JOUR(WS-IDX) NOT >= 1 
+               OR WS-JOUR(WS-IDX) NOT <= 31 
+                   DISPLAY "Erreur de saisie." 
+
+               ELSE 
+                   SET WS-SAISIE-OK-O TO TRUE 
+               END-IF 
+           END-PERFORM.
+           EXIT.
+       0164-SAISIE-JOUR-FIN.
+
+      *-----------------------------------------------------------------
+       
+       0165-SAISIE-MOIS-DEB.
+           
+           SET WS-SAISIE-OK-N TO TRUE.
+           
+           PERFORM UNTIL WS-SAISIE-OK-O
+
+               DISPLAY "Veuillez saisir un mois : " WITH NO ADVANCING 
+               ACCEPT WS-MOIS(WS-IDX)
+
+               IF  WS-MOIS(WS-IDX) NOT >= 1 
+               OR WS-MOIS(WS-IDX) NOT <= 12 
+                   DISPLAY "Erreur de saisie." 
+
+               ELSE 
+                   SET WS-SAISIE-OK-O TO TRUE 
+               END-IF
+           END-PERFORM.
+
+           EXIT.
+       0165-SAISIE-MOIS-FIN.
+
+      *-----------------------------------------------------------------
+       
+       0166-SAISIE-ANNEE-DEB.
+
+           DISPLAY "Veuillez saisir une année : " WITH NO ADVANCING. 
+           ACCEPT WS-ANNEE(WS-IDX).
+           EXIT.
+       0166-SAISIE-ANNEE-FIN.
+
+      *-----------------------------------------------------------------
+
+       0170-CONTINUER-CHOIX-DEB.
+
+           SET WS-SAISIE-OK-N TO TRUE. 
+
+           PERFORM UNTIL WS-SAISIE-OK-O
+               DISPLAY "Continuer ? (O/N)"
+               ACCEPT WS-CONTINUER
+
+               IF WS-CONTINUER NOT = "O" AND WS-CONTINUER NOT = "N"
+                   DISPLAY "Erreur de saisie."
+
+               ELSE 
+                   SET WS-SAISIE-OK-O TO TRUE 
+               END-IF 
+           END-PERFORM.           
+
+           EXIT.
+       0170-CONTINUER-CHOIX-FIN.
+
+      *-----------------------------------------------------------------
 
        0200-AFFICHAGE-DEB.
            
            PERFORM VARYING WS-IDX FROM 1 BY 1 
-           UNTIL WS-IDX = WS-COMPTE 
+           UNTIL WS-IDX > WS-COMPTE 
                DISPLAY WS-LIGNE-TAB(WS-IDX)
            END-PERFORM.
 
