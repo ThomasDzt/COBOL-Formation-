@@ -12,6 +12,7 @@
        DATA DIVISION.
        WORKING-STORAGE SECTION.
 
+      * Tableau de notes avec dates.
        01 WS-TAB.
            05 WS-LIGNE-TAB OCCURS 1 TO 100 TIMES DEPENDING ON WS-COMPTE.
                10 FILLER       PIC X(07)       VALUE "Note : ".
@@ -24,15 +25,21 @@
                    15 FILLER       PIC X           VALUE "/".
                    15 WS-ANNEE     PIC 9(04).  
 
-
+      * Variable de saisie de la note pour contrôle de saisie.
        01 WS-NOTE-TEMP         PIC S9(03).
+
+      * Index pour parcourir le tableau.
        77 WS-IDX               PIC 9(03).
+
+      * Variable de décompte du nombre de lignes de tableau remplies. 
        01 WS-COMPTE            PIC 9(03).
        
+      * Flag de confirmation pour continuer à remplir le tableau.
        01 WS-CONTINUER         PIC X.
            88 WS-CONTINUER-O               VALUE "O".
            88 WS-CONTINUER-N               VALUE "N".
 
+      * Flag de contrôle de saisie.
        01 WS-SAISIE-OK        PIC X.
            88 WS-SAISIE-OK-O               VALUE "O".
            88 WS-SAISIE-OK-N               VALUE "N".
@@ -57,11 +64,14 @@
            
            SET WS-CONTINUER-O TO TRUE.
            INITIALIZE WS-COMPTE.
-
+      
+      * Remplissage du tableau ligne par ligne tant que l'utilisateur le
+      * souhaite et jusqu'à ce que le tableau soit complet.
            PERFORM VARYING WS-IDX FROM 1 BY 1 
            UNTIL WS-IDX = 100 
            OR WS-CONTINUER-N
-               
+
+      * Incrémentation de la variable de décompte.         
                ADD 1 TO WS-COMPTE
                
                PERFORM 0150-SAISIE-NOTE-DEB
@@ -72,6 +82,7 @@
                
                DISPLAY "Note ajoutée."
 
+      * Demande à l'utilisateur s'il veut poursuivre la saisie de notes.       
                PERFORM 0170-CONTINUER-CHOIX-DEB
                   THRU 0170-CONTINUER-CHOIX-FIN
 
@@ -86,8 +97,10 @@
       *-----------------------------------------------------------------
        
        0150-SAISIE-NOTE-DEB.
-           
+       
            SET WS-SAISIE-OK-N TO TRUE. 
+       
+      * Boucle jusqu'à ce que la saisie de la note soit correcte.
            PERFORM UNTIL WS-SAISIE-OK-O
                DISPLAY "Veuillez saisir une note (0 à 99): " 
                WITH NO ADVANCING 
@@ -96,13 +109,14 @@
                IF WS-NOTE-TEMP < 0 
                OR WS-NOTE-TEMP > 99
                    DISPLAY "La note saisie est incorrecte."
-
+       
+      * Lorsque la saisie est correcte, on alimente la variable WS-NOTE
+      * du tableau avec la valeur saisie.
                ELSE 
                    SET WS-SAISIE-OK-O TO TRUE
                    MOVE WS-NOTE-TEMP TO WS-NOTE(WS-IDX)
                END-IF
            END-PERFORM.
-
 
            EXIT.
        0150-SAISIE-NOTE-FIN.
@@ -120,7 +134,6 @@
            PERFORM 0166-SAISIE-ANNEE-DEB
               THRU 0166-SAISIE-ANNEE-FIN.
 
-
            EXIT.
        0160-SAISIE-DATE-FIN.
       *-----------------------------------------------------------------
@@ -128,6 +141,8 @@
        0164-SAISIE-JOUR-DEB.
 
            SET WS-SAISIE-OK-N TO TRUE.
+
+      * Boucle jusqu'à ce que la saisie du jour soit correcte.
 
            PERFORM UNTIL WS-SAISIE-OK-O
 
@@ -151,6 +166,8 @@
            
            SET WS-SAISIE-OK-N TO TRUE.
            
+      * Boucle jusqu'à ce que la saisie du mois soit correcte.
+
            PERFORM UNTIL WS-SAISIE-OK-O
 
                DISPLAY "Veuillez saisir un mois : " WITH NO ADVANCING 
@@ -182,7 +199,8 @@
        0170-CONTINUER-CHOIX-DEB.
 
            SET WS-SAISIE-OK-N TO TRUE. 
-
+               
+      * Boucle jusqu'à ce que la saisie soit correcte.
            PERFORM UNTIL WS-SAISIE-OK-O
                DISPLAY "Continuer ? (O/N)"
                ACCEPT WS-CONTINUER
@@ -202,6 +220,7 @@
 
        0200-AFFICHAGE-DEB.
            
+      * Affichage des lignes remplies du tableau.
            PERFORM VARYING WS-IDX FROM 1 BY 1 
            UNTIL WS-IDX > WS-COMPTE 
                DISPLAY WS-LIGNE-TAB(WS-IDX)
