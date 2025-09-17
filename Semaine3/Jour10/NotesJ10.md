@@ -37,8 +37,36 @@ Ou encore :
 ```
 
 Dans le premier exemple, le mot saisi est défini comme un tableau de 10 éléments maximum et chaque lettre composant le mot est un élément du tableau.   
-Dans le second exemple, il s'agit d'un tableau de 3 éléments dans lequel sont saisis 3 nombres.
+Dans le second exemple, il s'agit d'un tableau de 3 éléments dans lequel sont saisis 3 nombres.     
 
+**NB :** Lors de l'utilisation d'un `OCCURS n TIMES`, il est possible de préciser un tableau de **taille variable** à l'aide de `DEPENDING ON`. 
+
+Par exemple :
+
+```cobol
+* Tableau de notes avec dates.
+01 WS-TAB.
+    05 WS-LIGNE-TAB OCCURS 1 TO 100 TIMES DEPENDING ON WS-COMPTE.
+        10 FILLER       PIC X(07)       VALUE "Note : ".
+        10 WS-NOTE      PIC 9(02).
+        10 FILLER       PIC X(04)       VALUE " le ".
+        10 WS-DATE.
+            15 WS-JOUR      PIC 9(02).
+            15 FILLER       PIC X           VALUE "/".
+            15 WS-MOIS      PIC 9(02).
+            15 FILLER       PIC X           VALUE "/".
+            15 WS-ANNEE     PIC 9(04).  
+
+* Variable de saisie de la note pour contrôle de saisie.
+01 WS-NOTE-TEMP         PIC S9(03).
+
+* Index pour parcourir le tableau.
+77 WS-IDX               PIC 9(03).
+
+* Variable de décompte du nombre de lignes de tableau remplies. 
+01 WS-COMPTE            PIC 9(03).
+```
+Le `OCCURS`est accompagné d'un intervalle spécifié par *VALEUR1* `TO` *VALEUR2* lorsqu'on utilise `DEPENDING ON` *VARIABLE*.
 <br><br/> 
 
 **FUNCTION MOD :**  
