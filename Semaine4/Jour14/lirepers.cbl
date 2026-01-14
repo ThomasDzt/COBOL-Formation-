@@ -35,6 +35,13 @@
 
                10 WS-AGE           PIC 9(02).
                
+       01 WS-DATE-ACTU.
+           05 WS-JOUR-ACTU         PIC 9(02).
+           05 FILLER               PIC X       VALUE "/".
+           05 WS-MOIS-ACTU         PIC 9(02).
+           05 FILLER               PIC X       VALUE "/".
+           05 WS-ANNEE-ACTU        PIC 9(04).
+
 
        77 WS-IDX                   PIC 9(02).
        77 WS-IDX2                  PIC 9(02).
@@ -42,6 +49,7 @@
        01 WS-TEMP                  PIC X(15).
        01 WS-MAX                   PIC 9(02).
        
+
        01 WS-FIN-LECTURE           PIC X.
            88  WS-FIN-LECTURE-N                VALUE "N".   
            88  WS-FIN-LECTURE-O                VALUE "O".  
@@ -57,9 +65,9 @@
            88  WS-NOM-TROUVE-N                VALUE "N".   
            88  WS-NOM-TROUVE-O                VALUE "O". 
 
-      *01 WS-CHOIX           PIC X.
-      *    88  WS-CHOIX-N                VALUE "N".   
-      *    88  WS-CHOIX-O                VALUE "O". 
+      *01 WS-QUITTER           PIC X.
+      *    88  WS-QUITTER-N                VALUE "N".   
+      *    88  WS-QUITTER-O                VALUE "O". 
 
        PROCEDURE DIVISION.
 
@@ -71,6 +79,9 @@
            
            PERFORM 0300-AFFICHE-TABLEAU-DEB
               THRU 0300-AFFICHE-TABLEAU-FIN.
+           
+           PERFORM 0350-CALCUL-AGE-DEB
+              THRU 0350-CALCUL-AGE-FIN.
 
            PERFORM 0400-RECHERCHE-NOM-DEB
               THRU 0400-RECHERCHE-NOM-FIN.
@@ -177,27 +188,105 @@
            EXIT.
        0300-AFFICHE-TABLEAU-FIN.
 
-      *----------------------------------------------------------------- 
+      *-----------------------------------------------------------------
 
+       0350-CALCUL-AGE-DEB.
+           
+           MOVE FUNCTION CURRENT-DATE(1:4) TO WS-ANNEE-ACTU.
+           MOVE FUNCTION CURRENT-DATE(5:2) TO WS-MOIS-ACTU.
+           MOVE FUNCTION CURRENT-DATE(7:2) TO WS-JOUR-ACTU.
+           
+      *    MOVE 2026 TO WS-ANNEE-ACTU.
+      *    MOVE 03 TO WS-MOIS-ACTU.
+      *    MOVE 01 TO WS-JOUR-ACTU.
+
+           DISPLAY "La date du jour est " WS-DATE-ACTU "." .
+
+           PERFORM VARYING WS-IDX FROM 1 BY 1 UNTIL WS-IDX > WS-MAX
+               
+               EVALUATE WS-MOIS-ACTU 
+                   WHEN > WS-MOIS(WS-IDX)
+
+                       PERFORM 0355-ANNIV-PASSE-DEB
+                          THRU 0355-ANNIV-PASSE-FIN
+
+                   WHEN = WS-MOIS(WS-IDX)
+
+                       PERFORM 0356-MOIS-ANNIV-DEB
+                          THRU 0356-MOIS-ANNIV-FIN
+
+                   WHEN < WS-MOIS(WS-IDX)
+
+                       PERFORM 0357-ANNIV-A-VENIR-DEB
+                          THRU 0357-ANNIV-A-VENIR-FIN
+               END-EVALUATE 
+               
+
+           END-PERFORM.
+           EXIT.
+       0350-CALCUL-AGE-FIN.
+
+      *----------------------------------------------------------------- 
+       0355-ANNIV-PASSE-DEB.
+           
+           COMPUTE WS-AGE(WS-IDX) = WS-ANNEE-ACTU - WS-ANNEE(WS-IDX).
+               
+           EXIT.
+
+       0355-ANNIV-PASSE-FIN.
+      *----------------------------------------------------------------- 
+       
+       0356-MOIS-ANNIV-DEB.
+           
+           IF WS-JOUR-ACTU >= WS-JOUR(WS-IDX)
+
+               PERFORM 0355-ANNIV-PASSE-DEB
+                  THRU 0355-ANNIV-PASSE-FIN
+
+           ELSE 
+               PERFORM 0357-ANNIV-A-VENIR-DEB
+                  THRU 0357-ANNIV-A-VENIR-FIN
+
+           END-IF.
+           EXIT.
+
+       0356-MOIS-ANNIV-FIN.
+      *-----------------------------------------------------------------
+
+       0357-ANNIV-A-VENIR-DEB.
+           
+           COMPUTE WS-AGE(WS-IDX) = WS-ANNEE-ACTU - WS-ANNEE(WS-IDX)- 1. 
+                                       
+           EXIT.
+
+       0357-ANNIV-A-VENIR-FIN.
+      *-----------------------------------------------------------------
        0400-RECHERCHE-NOM-DEB.
 
-           DISPLAY "Saisir le nom recherché : ".
-           ACCEPT WS-CHERCHE-NOM.
+           
            SET WS-NOM-TROUVE-N TO TRUE.
 
            PERFORM UNTIL WS-NOM-TROUVE-O
+
+               DISPLAY "Saisir le nom recherché : "
+               ACCEPT WS-CHERCHE-NOM
+               
                PERFORM VARYING WS-IDX FROM 1 BY 1 UNTIL WS-IDX > WS-MAX 
                    
                    IF FUNCTION UPPER-CASE(WS-CHERCHE-NOM)=WS-NOM(WS-IDX)
 
-                        COMPUTE WS-AGE(WS-IDX) = 2026 - WS-ANNEE(WS-IDX)
-                           DISPLAY "Nom : " WS-NOM(WS-IDX)
-                           DISPLAY "Prenom : " WS-PRENOM(WS-IDX)
-                           DISPLAY "Age : " WS-AGE(WS-IDX)
+                       DISPLAY "Nom : " WS-NOM(WS-IDX)
+                       DISPLAY "Prenom : " WS-PRENOM(WS-IDX)
+                       DISPLAY "Age : " WS-AGE(WS-IDX)
                        
                        SET WS-NOM-TROUVE-O TO TRUE 
                    END-IF 
                END-PERFORM
+
+               IF WS-NOM-TROUVE-N
+                   DISPLAY "Aucun résultat pour le nom saisi."
+               END-IF 
+
            END-PERFORM.
 
            EXIT.
