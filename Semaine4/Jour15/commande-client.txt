@@ -1,0 +1,37 @@
+Client : BONNET     JULIE
+  Quantite : 001 Numero : 0120
+  Quantite : 002 Numero : 0050
+
+Client : PETIT      MARC
+  Quantite : 001 Numero : 0080
+  Quantite : 002 Numero : 0120
+
+Client : LAMBERT    SANDRA
+  Quantite : 001 Numero : 0050
+  Quantite : 002 Numero : 0200
+
+Client : MENARD     ALAIN
+  Quantite : 001 Numero : 0080
+  Quantite : 002 Numero : 0120
+  Quantite : 003 Numero : 0050
+
+Client : GERARD     NATHALIE
+  Quantite : 001 Numero : 0200
+
+Client : GARNIER    LUC
+  Quantite : 001 Numero : 0080
+  Quantite : 002 Numero : 0050
+
+Client : ROUSSEL    ANNE
+  Quantite : 001 Numero : 0120
+
+Client : MARTIN     THOMAS
+  Quantite : 001 Numero : 0200
+
+Client : FONTAINE   PAULINE
+  Quantite : 001 Numero : 0120
+
+Client : BLANC      LAURA
+  Quantite : 001 Numero : 0050
+  Quantite : 002 Numero : 0120
+
